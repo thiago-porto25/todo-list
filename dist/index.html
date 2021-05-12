@@ -4,9 +4,45 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./style.css" rel="stylesheet" type="text/css">
+    <script src="https://kit.fontawesome.com/59cf6b17a6.js" crossorigin="anonymous"></script>
     <title>Todo List</title>
   </head>
   <body>
+    <nav>
+      <div id="newProjectButtonContainer">
+        <button class="button" id="newProjectButton"></button>
+      </div>
+      <div id="projectsListContainer">
+        <h1>Projects</h1>
+        <ul id="projectsList">
+          <li class="projectsListItem">Default</li>
+        </ul>
+      </div>
+    </nav>
+    <main>
+      <section id="copyright">
+        <p>Made by <a href="#">Thiago Porto</a></p>
+      </section>
+      <section class="templateProjectPage" id="defaultProject">
+        <div class="projectTitleContainer"></div>
+        <div class="projectTodosContainer">
+          <ul class="TodosList">
+            <li class="TodosListItem">
+              <input class="TodoCheckBox" type="checkbox" data-id="0">
+              Default 1
+              <button class="button" id="editTodo"><i class="far fa-edit"></i></button>
+              <button class="button" id="deleteTodo"><i class="fas fa-trash-alt"></i></button>
+            </li>
+            <li class="TodosListItem">
+              <input class="TodoCheckBox" type="checkbox" data-id="1">
+              Default 2
+              <button class="button" id="editTodo"><i class="far fa-edit"></i></button>
+              <button class="button" id="deleteTodo"><i class="fas fa-trash-alt"></i></button>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
   </body>
   <script src="./main.js"></script>
 </html>
