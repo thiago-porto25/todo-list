@@ -6,10 +6,78 @@ body {
   height: 100vh;
 }
 #appPage {
-  display: flex;
+  display: none;
   width: 100%;
   height: 100%;
 }
+/* Login Page */
+#loginPage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#bigLogoContainer span {
+  font-size: 70px;
+  height: 60%;
+}
+#loginForm {
+  width: 100%;
+  height: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.loginContainer {
+  font-family: 'Noto Sans JP', sans-serif;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+input:focus ~ .floating-label,
+input:not(:focus):valid ~ .floating-label{
+  top: 2px;
+  bottom: 10px;
+  left: 10px;
+  font-size: 12px;
+  opacity: 1;
+  color: rgb(12, 12, 119);
+ }
+.inputText {
+  font-size: 17px;
+  width: 20rem;
+  height: 40px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  border-radius: 5px;
+  border: 1px solid grey;
+  outline: rgb(12, 12, 119);
+}
+.inputText:focus {
+  border: 2px solid rgb(12, 12, 119);
+  margin: -1px;
+}
+.floating-label {
+  position: absolute;
+  pointer-events: none;
+  left: 10px;
+  top: 12px;
+  transition: 0.2s ease all;
+  color: rgb(114, 111, 111);
+}
+.loginButton {
+  height: 3rem;
+  width: 21rem;
+  margin-top: 2rem;
+  border-radius: 20px;
+}
+
 
 /* nav styling */
 nav {
@@ -26,7 +94,7 @@ nav {
   justify-content: center;
   align-items: center;
 }
-#logoContainer span {
+.logo span {
   font-family: 'Sora', sans-serif;
   font-size: 45px;
   font-weight: bolder;
@@ -272,7 +340,8 @@ main {
   border: none;
   color: white;
   font-size: 15px;
-  font-family: 'Noto Sans JP',sans-serif
+  font-family: 'Noto Sans JP',sans-serif;
+  background-color: rgb(12, 12, 119);
 }
 
 
