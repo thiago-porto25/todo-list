@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="./style.css" rel="stylesheet" type="text/css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&family=Sora&display=swap" rel="stylesheet">
     <script
       src="https://kit.fontawesome.com/59cf6b17a6.js"
       crossorigin="anonymous"
@@ -14,6 +16,9 @@
     <div id="loginPage"></div>
     <div id="appPage">
       <nav>
+        <div id="logoContainer">
+          <span>Todo List</span>
+        </div>
         <div id="newProjectButtonContainer">
           <button class="button" id="newProjectButton">
             <i class="fas fa-plus-circle"></i> New Project
@@ -24,22 +29,22 @@
           <ul id="projectsList">
             <li class="projectsListItem">
               <p>Default</p>
-              <i class="fas fa-task fa-project-delete fa-trash-alt"></i>
-            </li>
-            <li class="projectsListItem">
-              <p>Prova</p>
-              <i class="fas fa-task fa-project-delete fa-trash-alt"></i>
+              <i class="fas fa-task fa-project-delete fa-trash-alt" data-deleteProject="0"></i>
             </li>
           </ul>
         </div>
         <div id="foot">
           <p>
             Created by
-            <a href="#"><i class="fab fa-github"></i> Thiago Porto</a>
+            <a href="https://github.com/thiago-porto25"><i class="fab fa-github"></i> Thiago Porto</a>
           </p>
         </div>
       </nav>
       <main>
+        <div class="projectContainer userNameContainer">
+          <i class="fas fa-task fa-user-circle"></i>
+          <span>Thiago</span>
+        </div>
         <div class="projectTitleContainer projectContainer">
           <h2>Default <i class="fas fa-pen"></i></h2>
         </div>
@@ -56,7 +61,7 @@
 
               <div class="buttonsContainer">
                 <button class="button taskButton" id="editTodo">
-                  <i class="far fa-task fa-edit"></i>
+                  <i class="fas fa-task fa-info-circle"></i>
                 </button>
                 <button class="button taskButton" id="deleteTodo">
                   <i class="fas fa-task fa-trash-alt"></i>
@@ -74,7 +79,7 @@
 
               <div class="buttonsContainer">
                 <button class="button taskButton" id="editTodo">
-                  <i class="far fa-task fa-edit"></i>
+                  <i class="fas fa-task fa-info-circle"></i>
                 </button>
                 <button class="button taskButton" id="deleteTodo">
                   <i class="fas fa-task fa-trash-alt"></i>
@@ -84,6 +89,14 @@
           </ul>
         </div>
       </main>
+      <div class="modal">
+        <div class="modalTemplate modalNewProject">
+          <span class="close">&times;</span>
+          <header>New Project</header>
+          <input placeholder="Project's Name">
+          <button class="button submitProjectButton">Create</button>
+        </div>
+      </div>
     </div>
   </body>
   <script src="./main.js"></script>
