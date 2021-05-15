@@ -425,6 +425,14 @@ main {
   from {top: -300px; opacity: 0}
   to {top: 0; opacity: 1}
 }
+.modalInput {
+  border: 0;
+  border-radius: 100px;
+  outline: none;
+  background-color: rgb(214, 209, 209);
+  font-family: inherit;
+  padding: 0px 20px 0px 20px;
+}
 
 
 /* New Project Modal*/
@@ -443,12 +451,6 @@ main {
 .modalNewProject input {
   width: 70%;
   height: 2.5rem;
-  border: 0;
-  border-radius: 100px;
-  outline: none;
-  background-color: rgb(214, 209, 209);
-  padding: 0px 20px 0px 20px;
-  font-family: inherit;
   font-size: 19px;
 }
 .modalNewProject input:hover, .modalNewProject input:focus {
@@ -467,18 +469,151 @@ main {
 }
 
 
+/* New task Modal*/
+.modalNewTask {
+  display: none;
+  width: 30rem;
+  height: 25rem;
+  justify-content: unset;
+
+}
+.modalNewTask form {
+  margin: 10%;
+  width: 80%;
+  height: 90%;
+  margin-bottom: 7%;
+  margin-top: 7%;
+}
+#taskTitleContainer {
+  height: 20%;
+}
+.newTaskInput {
+  height: 3rem;
+  width: 90%;
+  font-size: 25px;
+  font-weight: bold;
+}
+#dueDateContainer {
+  height: 27%;
+}
+.templateLabelNewTask {
+  font-weight: bold;
+  font-size: 20px;
+}
+#dueDateContainer input {
+  height: 2rem;
+  cursor: text;
+  margin-top: 1rem;
+}
+#notesContainer {
+  height: 35%;
+}
+#notesContainer textarea {
+  margin-top: 1rem;
+  height: 2.5rem;
+  border-radius: 10px !important;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  resize: none;
+  font-size: 15px;
+  width: 90%;
+}
+#addTaskButtonContainer {
+  height: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.addTaskButton {
+  width: 12rem;
+  height: 3rem;
+  border-radius: 40px;
+}
+
 /* Task info Modal */
 .modalTaskInfo {
   display: none;
+  width: 30rem;
+  height: 25rem;
+  background-color: white;
+  
+}
+#infoContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#infoContainer {
+  margin: 7%;
+  height: 100%;
+}
+#infoContainer textarea, #infoContainer input {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  resize: none;
+}
+#infoContainer input {
+  width: max-content;
+  height: 2rem;
+}
+#info {
+  padding-top: 10px;
+}
+#notesInfo {
+  border-radius: 10px;
+  padding-top: 10px;
+}
+#saveEditButtonContainer {
+  display: flex;
+  justify-content: center;
+}
+#saveEditButton {
+  margin: 0 auto;
 }
 
 
-/* Confirm delete project */
+/* Confirm delete Project*/
+#deleteProject {
+  display: none;
+}
+.modalDelete {
+  width: 27rem;
+  height: 10rem;
+}
+.modalDelete p {
+  height: 30%;
+  font-size: 18px;
+  font-weight: bold;
+}
+#deleteAndCancelContainer {
+  display: flex;
+  justify-content: flex-end;
+  width: 90%;
+}
+.cancelAndDelete {
+  border-radius: 5px;
+  height: 2.5rem;
+  width: 6rem;
+  margin-left: 1rem;
+}
+#finalDeleteProjectButton {
+  background-color: red;
+}
+#finalDeleteProjectButton:hover {
+  background-color: rgb(247, 39, 39);
+}
 
 
-
-/* Confirm delete task */
-
+/* Confirm delete Project*/
+#deleteTask {
+  display: none;
+}
+#finalDeleteTaskButton {
+  background-color: red;
+}
+#finalDeleteTaskButton:hover {
+  background-color: rgb(247, 39, 39);
+}
 
 
 /*close modal button*/
