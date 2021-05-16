@@ -1,3 +1,5 @@
+const { info } = require("node:console")
+
 const navCreator = (function() {
   const _createLogo = () => {
     const logoContainer = document.createElement('div')
@@ -271,9 +273,60 @@ const modalsCreator = (function() {
   }
 
   const _createModalTaskInfo = () => {
+    const modalTaskInfo = document.createElement('div')
+    modalTaskInfo.setAttribute('class', 'modalTemplate modalTaskInfo')
+
+    const form = document.createElement('form')
+    form.setAttribute('id', 'infoContainer')
+
     const closeBtn = document.createElement('span')
     closeBtn.setAttribute('class', 'close')
     closeBtn.textContent = '&times;'
+
+    const infoTitle = document.createElement('textarea')
+    infoTitle.setAttribute('class', 'modalInput newTaskInput')
+    infoTitle.setAttribute('id', 'infoTitle')
+    infoTitle.setAttribute('required', '')
+
+    const labelDate = document.createElement('label') 
+    labelDate.setAttribute('class', 'templateLabelNewTask')
+    labelDate.textContent = 'Due Date'
+    
+    const infoDate = document.createElement('input')
+    infoDate.setAttribute('class', 'modalInput')
+    infoDate.setAttribute('type', 'date')
+
+    const labelNotes = document.createElement('label')
+    labelNotes.setAttribute('class', 'templateLabelNewTask')
+    labelNotes.textContent = 'Notes'
+
+    const infoNotes = document.createElement('textarea')
+    infoNotes.setAttribute('class', 'modalInput')
+    infoNotes.setAttribute('id', 'notesInfo')
+    infoNotes.setAttribute('maxlength', '150')
+    infoNotes.setAttribute('rows', '3')
+    infoNotes.setAttribute('placeholder', 'Insert you notes here...')
+
+    const saveEditButtonContainer = document.createElement('div')
+    saveEditButtonContainer.setAttribute('id', 'saveEditButtonContainer')
+
+    const saveEditButton = document.createElement('button')
+    saveEditButton.setAttribute('class', 'button addTaskButton saveEditButton')
+    saveEditButton.textContent = 'Save changes'
+
+    saveEditButtonContainer.appendChild(saveEditButton)
+
+    form.appendChild(closeBtn)
+    form.appendChild(infoTitle)
+    form.appendChild(labelDate)
+    form.appendChild(infoDate)
+    form.appendChild(labelNotes)
+    form.appendChild(infoNotes)
+    form.appendChild(saveEditButtonContainer)
+
+    modalTaskInfo.appendChild(form)
+
+    return modalTaskInfo
   }
 
   const _createModalDeleteProject = () => {
