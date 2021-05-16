@@ -235,6 +235,120 @@ const mainCreator = (function() {
 
 
 const modalsCreator = (function() {
+  const _createModalNewProject = () => {
+    const modalNewProject = document.createElement('div')
+    modalNewProject.setAttribute('class', 'modalTemplate modalNewProject')
+
+    const closeBtn = document.createElement('span')
+    closeBtn.setAttribute('class', 'close')
+    closeBtn.textContent = '&times;'
+
+    const header = document.createElement('header')
+    header.textContent = 'New Project'
+
+    const projectName = document.createElement('input')
+    projectName.setAttribute('class', 'modalInput')
+    projectName.setAttribute('placeholder', 'Project\'s Name')
+    projectName.setAttribute('required', '')
+    projectName.setAttribute('maxlength', '20')
+
+    const submitButton = document.createElement('button')
+    submitButton.setAttribute('class', 'button submitProjectButton')
+    submitButton.textContent = 'Create'
+
+    modalNewProject.appendChild(closeBtn)
+    modalNewProject.appendChild(header)
+    modalNewProject.appendChild(projectName)
+    modalNewProject.appendChild(submitButton)
+
+    return modalNewProject
+  }
+
+  const _createModalNewTask = () => {
+    const closeBtn = document.createElement('span')
+    closeBtn.setAttribute('class', 'close')
+    closeBtn.textContent = '&times;'
+  }
+
+  const _createModalTaskInfo = () => {
+    const closeBtn = document.createElement('span')
+    closeBtn.setAttribute('class', 'close')
+    closeBtn.textContent = '&times;'
+  }
+
+  const _createModalDeleteProject = () => {
+    const deleteProject = document.createElement('div')
+    deleteProject.setAttribute('class', 'modalTemplate modalDelete')
+    deleteProject.setAttribute('id', 'deleteProject')
+
+    const closeBtn = document.createElement('span')
+    closeBtn.setAttribute('class', 'close')
+    closeBtn.textContent = '&times;'
+
+    const para = document.createElement('p')
+    para.textContent = 'Are you sure you want to delete this Project?'
+
+    const buttonsContainer = document.createElement('div')
+    buttonsContainer.setAttribute('id', 'deleteAndCancelContainer')
+
+    const deleteButton = document.createElement('button')
+    deleteButton.setAttribute('class', 'button cancelAndDelete')
+    deleteButton.setAttribute('id', 'finalDeleteProjectButton')
+    deleteButton.textContent = 'Delete'
+
+    const cancelButton = document.createElement('button')
+    cancelButton.setAttribute('class', 'button cancelAndDelete')
+    cancelButton.setAttribute('id', 'cancelDeleteProjectButton')
+    cancelButton.textContent = 'Cancel'
+
+    buttonsContainer.appendChild(deleteButton)
+    buttonsContainer.appendChild(cancelButton)
+
+    deleteProject.appendChild(closeBtn)
+    deleteProject.appendChild(para)
+    deleteProject.appendChild(buttonsContainer)
+
+    return deleteProject
+  }
+
+  const _createModalDeleteTask = () => {
+    const deleteTask = document.createElement('div')
+    deleteTask.setAttribute('class', 'modalTemplate modalDelete')
+    deleteTask.setAttribute('id', 'deleteTask')
+
+    const closeBtn = document.createElement('span')
+    closeBtn.setAttribute('class', 'close')
+    closeBtn.textContent = '&times;'
+
+    const para = document.createElement('p')
+    para.textContent = 'Are you sure you want to delete this Task?'
+
+    const buttonsContainer = document.createElement('div')
+    buttonsContainer.setAttribute('id', 'deleteAndCancelContainer')
+
+    const deleteButton = document.createElement('button')
+    deleteButton.setAttribute('class', 'button cancelAndDelete')
+    deleteButton.setAttribute('id', 'finalDeleteTaskButton')
+    deleteButton.textContent = 'Delete'
+
+    const cancelButton = document.createElement('button')
+    cancelButton.setAttribute('class', 'button cancelAndDelete')
+    cancelButton.setAttribute('id', 'cancelDeleteTaskButton')
+    cancelButton.textContent = 'Cancel'
+
+    buttonsContainer.appendChild(deleteButton)
+    buttonsContainer.appendChild(cancelButton)
+
+    deleteTask.appendChild(closeBtn)
+    deleteTask.appendChild(para)
+    deleteTask.appendChild(buttonsContainer)
+
+    return deleteTask
+  }
+
+  const createModal = () => {
+
+  }
 
 })()
 
