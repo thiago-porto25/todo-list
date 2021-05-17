@@ -239,6 +239,45 @@ main {
   width: fit-content;
 }
 
+/* New Todo Button */
+#newTodoButtonContainer {
+  background-color: white !important;
+  border-radius: 100%;
+  height: 4.5rem;
+  width: 4.5rem;
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.623);
+  transition: 0.3s;
+}
+#newTodoButtonContainer:hover {
+  transform: scale(1.05);
+  background-color: lightgray !important;
+  
+}
+.newTodoButton {
+  border-radius: 100%;
+  background-color: inherit !important;
+  height: 100% !important;
+  width: 100% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.newTodoButton:hover {
+  background-color: lightgray !important;
+}
+.plusSpan {
+  color: rgb(12, 12, 119) ;
+  font-weight: bolder;
+  font-size: 43px;
+  text-align: center;
+}
+
 
 /* Project Title Container */
 .projectContainer {
@@ -277,7 +316,7 @@ main {
 /* Tasks Container */
 .projectTodosContainer {
   width: 34rem;
-  height: 60%;
+  height: 23rem;
 }
 .todosList {
   padding: 0;

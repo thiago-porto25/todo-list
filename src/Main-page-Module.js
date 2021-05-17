@@ -23,8 +23,8 @@ const navCreator = (function() {
     const plusIcon = document.createElement('i')
     plusIcon.setAttribute('class', 'fas fa-plus-circle')
 
-    newProjectButton.appendChild(plusIcon)
-    newProjectButton.textContent = 'New Project'
+    newProjectButton.textContent = ' New Project'
+    newProjectButton.prepend(plusIcon)
 
     newProjectButtonContainer.appendChild(newProjectButton)
 
@@ -60,8 +60,8 @@ const navCreator = (function() {
     const i = document.createElement('i')
     i.setAttribute('class', 'fab fa-github')
 
-    a.appendChild(i)
-    a.textContent = 'Thiago Porto'
+    a.textContent = ' Thiago Porto'
+    a.prepend(i)
 
     p.appendChild(a)
     foot.appendChild(p)
@@ -70,8 +70,6 @@ const navCreator = (function() {
   }
 
   const createNav = () => {
-    const appPage = document.querySelector('#appPage')
-
     const nav = document.createElement('nav')
 
     const logoContainer = _createLogo()
@@ -84,13 +82,10 @@ const navCreator = (function() {
     nav.appendChild(projectsListContainer)
     nav.appendChild(foot)
 
-    appPage.appendChild(nav)
+    return nav
   }
 
-  return {
-    createNav,
-    createProjectListItem
-  }
+  return { createNav }
 })()
 
 
@@ -111,6 +106,23 @@ const mainCreator = (function() {
     userNameContainer.appendChild(span)
 
     return userNameContainer
+  }
+
+  const _createNewTodoButtonContainer = () => {
+    const newTodoButtonContainer = document.createElement('div')
+    newTodoButtonContainer.setAttribute('id', 'newTodoButtonContainer')
+
+    const newTodoButton = document.createElement('button')
+    newTodoButton.setAttribute('class', 'button newTodoButton')
+
+    const span = document.createElement('span')
+    span.setAttribute('class', 'plusSpan')
+    span.textContent = '+'
+
+    newTodoButton.appendChild(span)
+    newTodoButtonContainer.appendChild(newTodoButton)
+
+    return newTodoButtonContainer
   }
 
   const _createProjectTitleContainer = () => {
@@ -142,18 +154,18 @@ const mainCreator = (function() {
   }
 
   const createMain = () => {
-    const appPage = document.querySelector('#appPage')
-
     const main = document.createElement('main')
     const userNameContainer = _createUserNameContainer()
+    const newTodoButton = _createNewTodoButtonContainer()
     const projectTitleContainer = _createProjectTitleContainer()
     const projectTodosContainer = _createProjectTodosContainer()
 
     main.appendChild(userNameContainer)
+    main.appendChild(newTodoButton)
     main.appendChild(projectTitleContainer)
     main.appendChild(projectTodosContainer)
 
-    appPage.appendChild(main)
+    return main
   }
 
   return { createMain }
@@ -273,8 +285,6 @@ const modalsCreator = (function() {
 
     return modalNewTask
   }
-
-  //create a edit Title, edit date and edit notes function
 
   const _createModalTaskInfo = () => {
     const modalTaskInfo = document.createElement('div')
@@ -404,8 +414,6 @@ const modalsCreator = (function() {
   }
 
   const createModal = () => {
-    const appPage = document.querySelector('#appPage')
-
     const modal = document.createElement('div')
     modal.setAttribute('class', 'modal')
 
@@ -421,7 +429,7 @@ const modalsCreator = (function() {
     modal.appendChild(deleteProject)
     modal.appendChild(deleteTask)
 
-    appPage.appendChild(modal)
+    return modal
   }
 
   return { createModal }
@@ -445,7 +453,8 @@ const navDomHandler = (function() {
     listItem.appendChild(para)
     listItem.appendChild(deleteIcon)
 
-    return listItem
+    const projectsList = document.querySelector('#projectsList')
+    projectsList.appendChild(listItem)
   }
 
   return { createProjectListItem }
@@ -512,8 +521,43 @@ const mainDomHandler = (function(){
 
     todosListItem.appendChild(buttonsContainer)
 
-    return todosListItem
+    const todosList = document.querySelector('.todosList')
+
+    todosList.appendChild(todosListItem)
   }
 
   return { setUserNameOnPage, setProjectTitleOnPage, createTodosListItem }
 })()
+
+
+
+
+const modalDomHandler = (function() {
+  //create a edit Title, edit date and edit notes function
+})()
+
+
+
+
+const appPageRenderer = (function() {
+  const initialRender = () => {
+    const body = document.querySelector('body')
+
+    const appPage = document.createElement('div')
+    appPage.setAttribute('id', 'appPage')
+
+    const nav = navCreator.createNav()
+    const main = mainCreator.createMain()
+    const modal = modalsCreator.createModal()
+
+    appPage.appendChild(nav)
+    appPage.appendChild(main)
+    appPage.appendChild(modal)
+
+    body.appendChild(appPage)
+  }
+
+  return { initialRender }
+})()
+
+export { navDomHandler, mainDomHandler, modalDomHandler, appPageRenderer }

@@ -1,5 +1,5 @@
-const loginPageHandler = (function() {
-  const _createLogo = () => {
+const loginPageCreator = (function() {
+  const createLogo = () => {
     const bigLogoContainer = document.createElement('div')
     bigLogoContainer.setAttribute('id', 'bigLogoContainer')
     bigLogoContainer.setAttribute('class', 'logo')
@@ -12,7 +12,7 @@ const loginPageHandler = (function() {
     return bigLogoContainer
   }
 
-  const _createLoginForm = () => {
+  const createLoginForm = () => {
     const loginForm = document.createElement('form')
     loginForm.setAttribute('id', 'loginForm')
 
@@ -51,24 +51,27 @@ const loginPageHandler = (function() {
     return loginForm
   }
 
+  return { createLogo, createLoginForm }
+})()
+
+const loginPageRenderer = (function() {
   const initialRender = () => {
     const loginPage = document.createElement('div')
     loginPage.setAttribute('id', 'loginPage')
 
     const body = document.querySelector('body')
 
-    const bigLogoContainer = _createLogo()
+    const bigLogoContainer = loginPageCreator.createLogo()
 
-    const loginForm = _createLoginForm()
+    const loginForm = loginPageCreator.createLoginForm()
 
     loginPage.appendChild(bigLogoContainer)
     loginPage.appendChild(loginForm)
 
     body.appendChild(loginPage)
-    console.log(body)
   }
 
   return { initialRender }
 })()
 
-export { loginPageHandler }
+export { loginPageRenderer }
