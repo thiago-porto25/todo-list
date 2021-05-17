@@ -1,5 +1,3 @@
-const { info } = require("node:console")
-
 const navCreator = (function() {
   const _createLogo = () => {
     const logoContainer = document.createElement('div')
@@ -71,23 +69,6 @@ const navCreator = (function() {
     return foot
   }
 
-  const createProjectListItem = (name, id) => {
-    const listItem = document.createElement('li')
-    listItem.setAttribute('class', 'projectsListItem')
-    listItem.setAttribute('data-deleteProject', id)
-
-    const para = document.createElement('p')
-    para.textContent = name
-
-    const deleteIcon = document.createElement('i')
-    deleteIcon.setAttribute('class', 'fas fa-task fa-project-delete fa-trash-alt')
-
-    listItem.appendChild(para)
-    listItem.appendChild(deleteIcon)
-
-    return listItem
-  }
-
   const createNav = () => {
     const appPage = document.querySelector('#appPage')
 
@@ -111,7 +92,6 @@ const navCreator = (function() {
     createProjectListItem
   }
 })()
-
 
 
 
@@ -161,56 +141,6 @@ const mainCreator = (function() {
     return projectTodosContainer
   }
 
-  const createTodosListItem = (title, id) => {
-    const todosListItem = document.createElement('li')
-    todosListItem.setAttribute('class', 'todosListItem')
-    todosListItem.setAttribute('data-deleteTodo', id)
-
-    const label = document.createElement('label')
-    label.setAttribute('class', 'container')
-
-    const checkbox = document.createElement('input')
-    checkbox.setAttribute('type', 'checkbox')
-
-    const checkmark = document.createElement('span')
-    checkmark.setAttribute('class', 'checkmark')
-
-    label.appendChild(checkbox)
-    label.appendChild(checkmark)
-    todosListItem.appendChild(label)
-
-    const todoTitle = document.createElement('span')
-    todoTitle.setAttribute('class', 'todoTitle')
-    todoTitle.textContent = title
-
-    todosListItem.appendChild(todoTitle)
-
-    const buttonsContainer = document.createElement('div')
-    buttonsContainer.setAttribute('class', 'buttonsContainer')
-
-    const infoButton = document.createElement('button')
-    infoButton.setAttribute('class', 'button taskButton')
-    infoButton.setAttribute('id', 'editTodo')
-    const infoIcon = document.createElement('i')
-    infoIcon.setAttribute('class', 'fas fa-task fa-info-circle')
-
-    const deleteButton = document.createElement('button')
-    deleteButton.setAttribute('class', 'button taskButton')
-    deleteButton.setAttribute('id', 'deleteTodo')
-    const deleteIcon = document.createElement('i')
-    deleteIcon.setAttribute('class', 'fas fa-task fa-trash-alt')
-
-    infoButton.appendChild(infoIcon)
-    buttonsContainer.appendChild(infoButton)
-
-    deleteButton.appendChild(deleteIcon)
-    buttonsContainer.appendChild(deleteButton)
-
-    todosListItem.appendChild(buttonsContainer)
-
-    return todosListItem
-  }
-
   const createMain = () => {
     const appPage = document.querySelector('#appPage')
 
@@ -226,12 +156,8 @@ const mainCreator = (function() {
     appPage.appendChild(main)
   }
 
-  return {
-    createTodosListItem,
-    createMain
-  }
+  return { createMain }
 })()
-
 
 
 
@@ -267,10 +193,88 @@ const modalsCreator = (function() {
   }
 
   const _createModalNewTask = () => {
+    const modalNewTask = document.createElement('div')
+    modalNewTask.setAttribute('class', 'modalTemplate modalNewProject')
+
     const closeBtn = document.createElement('span')
     closeBtn.setAttribute('class', 'close')
     closeBtn.textContent = '&times;'
+
+    const form = document.createElement('form')
+    
+    const taskTitleContainer = document.createElement('div')
+    taskTitleContainer.setAttribute('id', 'taskTitleContainer')
+
+    const titleInput = document.createElement('input')
+    titleInput.setAttribute('class', 'modalInput newTaskInput')
+    titleInput.setAttribute('maxlength', '50')
+    titleInput.setAttribute('type', 'text')
+    titleInput.setAttribute('placeholder', 'I want to...')
+    titleInput.setAttribute('required', '')
+
+    taskTitleContainer.appendChild(titleInput)
+
+    const dueDateContainer = document.createElement('div')
+    dueDateContainer.setAttribute('id', 'dueDateContainer')
+
+    const labelDate = document.createElement('label')
+    labelDate.setAttribute('class', 'templateLabelNewTask')
+    labelDate.setAttribute('for', 'date')
+    labelDate.textContent = 'Due date'
+
+    const dateBreak = document.createElement('br')
+
+    const dateInput = document.createElement('input')
+    dateInput.setAttribute('class', 'modalInput')
+    dateInput.setAttribute('type', 'date')
+    dateInput.setAttribute('name', 'date')
+
+    dueDateContainer.appendChild(labelDate)
+    dueDateContainer.appendChild(dateBreak)
+    dueDateContainer.appendChild(dateInput)
+
+    const notesContainer = document.createElement('div')
+    notesContainer.setAttribute('id', 'notesContainer')
+
+    const labelNotes = document.createElement('label')
+    labelNotes.setAttribute('class', 'templateLabelNewTask')
+    labelNotes.setAttribute('for', 'notes')
+    labelNotes.textContent = 'Notes'
+
+    const notesBreak = document.createElement('br')
+
+    const textareaNotes = document.createElement('textarea')
+    textareaNotes.setAttribute('class', 'modalInput')
+    textareaNotes.setAttribute('maxlength', '150')
+    textareaNotes.setAttribute('name', 'notes')
+    textareaNotes.setAttribute('rows', '1')
+    textareaNotes.setAttribute('placeholder', 'Insert you notes here...')
+
+    notesContainer.appendChild(labelNotes)
+    notesContainer.appendChild(notesBreak)
+    notesContainer.appendChild(textareaNotes)
+
+    const addTaskButtonContainer = document.createElement('div')
+    addTaskButtonContainer.setAttribute('id', 'addTaskButtonContainer')
+
+    const addTaskButton = document.createElement('button')
+    addTaskButton.setAttribute('class', 'button addTaskButton')
+    addTaskButton.textContent = 'Create new Todo'
+
+    addTaskButtonContainer.appendChild(addTaskButton)
+
+    form.appendChild(taskTitleContainer)
+    form.appendChild(dueDateContainer)
+    form.appendChild(notesContainer)
+    form.appendChild(addTaskButtonContainer)
+
+    modalNewTask.appendChild(closeBtn)
+    modalNewTask.appendChild(form)
+
+    return modalNewTask
   }
+
+  //create a edit Title, edit date and edit notes function
 
   const _createModalTaskInfo = () => {
     const modalTaskInfo = document.createElement('div')
@@ -400,25 +404,116 @@ const modalsCreator = (function() {
   }
 
   const createModal = () => {
+    const appPage = document.querySelector('#appPage')
 
+    const modal = document.createElement('div')
+    modal.setAttribute('class', 'modal')
+
+    const newProject = _createModalNewProject()
+    const newTask = _createModalNewTask()
+    const taskInfo = _createModalTaskInfo()
+    const deleteProject = _createModalDeleteProject()
+    const deleteTask = _createModalDeleteTask()
+
+    modal.appendChild(newProject)
+    modal.appendChild(newTask)
+    modal.appendChild(taskInfo)
+    modal.appendChild(deleteProject)
+    modal.appendChild(deleteTask)
+
+    appPage.appendChild(modal)
   }
 
+  return { createModal }
 })()
 
 
 
 
+const navDomHandler = (function() {
+  const createProjectListItem = (name, id) => {
+    const listItem = document.createElement('li')
+    listItem.setAttribute('class', 'projectsListItem')
+    listItem.setAttribute('data-deleteProject', id)
 
-const appPageHandler = (function(){
-  const setUserNameOnMain = (user) => {
+    const para = document.createElement('p')
+    para.textContent = name
+
+    const deleteIcon = document.createElement('i')
+    deleteIcon.setAttribute('class', 'fas fa-task fa-project-delete fa-trash-alt')
+
+    listItem.appendChild(para)
+    listItem.appendChild(deleteIcon)
+
+    return listItem
+  }
+
+  return { createProjectListItem }
+})()
+
+
+
+
+const mainDomHandler = (function(){
+  const setUserNameOnPage = (user) => {
     const userName = document.querySelector('#userName')
     userName.textContent = user
   }
 
-
-  const setProjectNameOnMain = (title) => {
+  const setProjectTitleOnPage = (title) => {
     const projectTitle = document.querySelector('#projectTitle')
     projectTitle.textContent = title
   }
 
+  const createTodosListItem = (title, id) => {
+    const todosListItem = document.createElement('li')
+    todosListItem.setAttribute('class', 'todosListItem')
+    todosListItem.setAttribute('data-deleteTodo', id)
+
+    const label = document.createElement('label')
+    label.setAttribute('class', 'container')
+
+    const checkbox = document.createElement('input')
+    checkbox.setAttribute('type', 'checkbox')
+
+    const checkmark = document.createElement('span')
+    checkmark.setAttribute('class', 'checkmark')
+
+    label.appendChild(checkbox)
+    label.appendChild(checkmark)
+    todosListItem.appendChild(label)
+
+    const todoTitle = document.createElement('span')
+    todoTitle.setAttribute('class', 'todoTitle')
+    todoTitle.textContent = title
+
+    todosListItem.appendChild(todoTitle)
+
+    const buttonsContainer = document.createElement('div')
+    buttonsContainer.setAttribute('class', 'buttonsContainer')
+
+    const infoButton = document.createElement('button')
+    infoButton.setAttribute('class', 'button taskButton')
+    infoButton.setAttribute('id', 'editTodo')
+    const infoIcon = document.createElement('i')
+    infoIcon.setAttribute('class', 'fas fa-task fa-info-circle')
+
+    const deleteButton = document.createElement('button')
+    deleteButton.setAttribute('class', 'button taskButton')
+    deleteButton.setAttribute('id', 'deleteTodo')
+    const deleteIcon = document.createElement('i')
+    deleteIcon.setAttribute('class', 'fas fa-task fa-trash-alt')
+
+    infoButton.appendChild(infoIcon)
+    buttonsContainer.appendChild(infoButton)
+
+    deleteButton.appendChild(deleteIcon)
+    buttonsContainer.appendChild(deleteButton)
+
+    todosListItem.appendChild(buttonsContainer)
+
+    return todosListItem
+  }
+
+  return { setUserNameOnPage, setProjectTitleOnPage, createTodosListItem }
 })()
