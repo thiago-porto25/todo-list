@@ -132,4 +132,11 @@ const loginHandler = (function() {
   _loginLogic()
   eventsHandler.addListenerNewTask()
   eventsHandler.addListenerNewProject()
+
+  const projects = document.querySelectorAll('.projectsListItem')
+  projects.forEach(project => {
+    const deleteButton = project.lastChild
+
+    deleteButton.addEventListener('click', modalDomHandler.displayDeleteProjectModal)
+  })
 })()
