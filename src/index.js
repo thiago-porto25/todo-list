@@ -20,6 +20,7 @@ let userObj = localStorage.getItem('user') !== null ? _localStorageUserObj : {}
 console.log(userObj)
 
 
+
 const localStorageHandler = (function() {
   const update = () => {
     localStorage.setItem('user', JSON.stringify(userObj))
@@ -115,3 +116,7 @@ const loginHandler = (function() {
 
 
 
+const eventsHandler = (function(){
+  const newTodoButton = document.querySelector('.newTodoButton')
+  newTodoButton.addEventListener('click', modalDomHandler.displayNewTaskModal)
+})()

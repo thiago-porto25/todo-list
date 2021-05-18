@@ -131,12 +131,8 @@ const mainCreator = (function() {
 
     const h2 = document.createElement('h2')
     h2.setAttribute('id', 'projectTitle')
-    
-    const editIcon = document.createElement('i')
-    editIcon.setAttribute('class', 'fas fa-pen')
 
     projectTitleContainer.appendChild(h2)
-    projectTitleContainer.appendChild(editIcon)
 
     return projectTitleContainer
   }
@@ -181,7 +177,7 @@ const modalsCreator = (function() {
 
     const closeBtn = document.createElement('span')
     closeBtn.setAttribute('class', 'close')
-    closeBtn.textContent = '&times;'
+    closeBtn.innerHTML = '&times;'
 
     const header = document.createElement('header')
     header.textContent = 'New Project'
@@ -210,7 +206,7 @@ const modalsCreator = (function() {
 
     const closeBtn = document.createElement('span')
     closeBtn.setAttribute('class', 'close')
-    closeBtn.textContent = '&times;'
+    closeBtn.innerHTML = '&times;'
 
     const form = document.createElement('form')
     
@@ -295,7 +291,7 @@ const modalsCreator = (function() {
 
     const closeBtn = document.createElement('span')
     closeBtn.setAttribute('class', 'close')
-    closeBtn.textContent = '&times;'
+    closeBtn.innerHTML = '&times;'
 
     const infoTitle = document.createElement('textarea')
     infoTitle.setAttribute('class', 'modalInput newTaskInput')
@@ -350,7 +346,7 @@ const modalsCreator = (function() {
 
     const closeBtn = document.createElement('span')
     closeBtn.setAttribute('class', 'close')
-    closeBtn.textContent = '&times;'
+    closeBtn.innerHTML = '&times;'
 
     const para = document.createElement('p')
     para.textContent = 'Are you sure you want to delete this Project?'
@@ -385,7 +381,7 @@ const modalsCreator = (function() {
 
     const closeBtn = document.createElement('span')
     closeBtn.setAttribute('class', 'close')
-    closeBtn.textContent = '&times;'
+    closeBtn.innerHTML = '&times;'
 
     const para = document.createElement('p')
     para.textContent = 'Are you sure you want to delete this Task?'
@@ -533,7 +529,77 @@ const mainDomHandler = (function(){
 
 
 const modalDomHandler = (function() {
-  //create a edit Title, edit date and edit notes function
+  const createModals = () => {
+    modalsCreator.createModal()
+  }
+  const _displayModal = () => {
+    let modal = document.querySelector('.modal')
+    modal.style.display = 'flex'
+  }
+  const displayNewProjectModal = () => {
+    const newProjectModal = document.querySelector('.modalNewProject')
+    
+    newProjectModal.style.display = 'flex'
+  }
+  const removeNewProjectModal = () => {
+    const newProjectModal = document.querySelector('.modalNewProject')
+    
+    newProjectModal.style.display = 'none'
+  }
+  const displayNewTaskModal = () => {
+    const newTaskModal = document.querySelector('.modalNewProject')
+    _displayModal()
+    newTaskModal.style.display = 'flex'
+  }
+  const removeNewTaskModal = () => {
+    const newTaskModal = document.querySelector('.modalNewProject')
+    
+    newTaskModal.style.display = 'none'
+  }
+  const displayTaskInfoModal = () => {
+    const taskInfoModal = document.querySelector('.modalTaskInfo')
+    
+    taskInfoModal.style.display = 'flex'
+  }
+  const removeTaskInfoModal = () => {
+    const taskInfoModal = document.querySelector('.modalTaskInfo')
+    
+    taskInfoModal.style.display = 'none'
+  }
+  const displayDeleteProjectModal = () => {
+    const deleteProjectModal = document.querySelector('#deleteProject')
+    
+    deleteProjectModal.style.display = 'flex'
+  }
+  const removeDeleteProjectModal = () => {
+    const deleteProjectModal = document.querySelector('#deleteProject')
+    
+    deleteProjectModal.style.display = 'none'
+  }
+  const displayDeleteTaskModal = () => {
+    const deleteTaskModal = document.querySelector('#deleteTask')
+    
+    deleteTaskModal.style.display = 'flex'
+  }
+  const removeDeleteTaskModal = () => {
+    const deleteTaskModal = document.querySelector('#deleteTask')
+    deleteTaskModal.style.display = 'none'
+  }
+  //create an edit date and edit notes function
+
+  return {
+    createModals,
+    displayNewProjectModal,
+    displayNewTaskModal,
+    displayTaskInfoModal,
+    displayDeleteProjectModal,
+    displayDeleteTaskModal,
+    removeNewProjectModal,
+    removeNewTaskModal,
+    removeTaskInfoModal,
+    removeDeleteProjectModal,
+    removeDeleteTaskModal
+  }
 })()
 
 
