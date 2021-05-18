@@ -13,7 +13,20 @@ const prevent = (function() {
 
 
 
-const userObj = {}
+const _localStorageUserObj = JSON.parse(localStorage.getItem('user'))
+console.log(_localStorageUserObj)
+
+let userObj = localStorage.getItem('user') !== null ? _localStorageUserObj : {}
+console.log(userObj)
+
+
+const localStorageHandler = (function() {
+  const update = () => {
+    localStorage.setItem('user', JSON.stringify(userObj))
+  }
+
+  return { update }
+})()
 
 
 
@@ -47,29 +60,58 @@ const init = (function () {
           title: 'My first Todo',
           todoId: 0,
           dueDate: undefined,
-          notes: undefined
+          notes: 'Yay! I must start creating todos.'
         }]
       }
     ]
 
-    console.log(userObj)
+    localStorageHandler.update()
   }
-  return { renderDefaultAppPage }
+
+  const renderCustomAppPage = () => {
+    const userName = userObj.name
+
+    appPageRenderer.initialRender()
+
+    mainDomHandler.setUserNameOnPage(userName)
+    userObj.projects.forEach(project => {
+      const id = project.projectId
+      const name = project.name
+
+      navDomHandler.createProjectListItem(name, id)
+    })
+    mainDomHandler.setProjectTitleOnPage(userObj.projects[0].name)
+
+    userObj.projects[0].todos.forEach(todo => {
+      const title = todo.title
+      const id = todo.todoId
+
+      mainDomHandler.createTodosListItem(title, id)
+    })
+  }
+
+  return { renderDefaultAppPage, renderCustomAppPage }
 })()
 
 
 
 const loginHandler = (function() {
   const _loginLogic = () => {
-    let gameStorage = false
-
-    if(!gameStorage) {
+    if (userObj.name === undefined) {
       loginPageRenderer.initialRender()
+
       const _loginForm = document.querySelector('#loginForm')
       _loginForm.addEventListener('submit', prevent.Refresh)
       _loginForm.addEventListener('submit', init.renderDefaultAppPage)
+    }
+
+    else {
+      init.renderCustomAppPage()
     }
   }
 
   _loginLogic()
 })()
+
+
+
