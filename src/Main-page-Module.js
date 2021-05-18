@@ -452,8 +452,13 @@ const navDomHandler = (function() {
     const projectsList = document.querySelector('#projectsList')
     projectsList.appendChild(listItem)
   }
+  const removeProjectListItem = (id) => {
+    const projectDeleted = document.querySelector(`[data-deleteproject='${id}']`)
 
-  return { createProjectListItem }
+    projectDeleted.remove()
+  }
+
+  return { createProjectListItem, removeProjectListItem }
 })()
 
 
@@ -468,6 +473,11 @@ const mainDomHandler = (function(){
   const setProjectTitleOnPage = (title) => {
     const projectTitle = document.querySelector('#projectTitle')
     projectTitle.textContent = title
+  }
+
+  const removeProjectTitleOnPage = () => {
+    const projectTitle = document.querySelector('#projectTitle')
+    projectTitle.textContent = ''
   }
 
   const createTodosListItem = (title, id) => {
@@ -522,7 +532,20 @@ const mainDomHandler = (function(){
     todosList.appendChild(todosListItem)
   }
 
-  return { setUserNameOnPage, setProjectTitleOnPage, createTodosListItem }
+  const removeAllTodosListItems = () => {
+    const todosList = document.querySelectorAll('.todosListItem')
+    console.log(todosList)
+
+    todosList.forEach(todo => todo.remove())
+  }
+
+  return {
+    setUserNameOnPage,
+    setProjectTitleOnPage,
+    createTodosListItem,
+    removeProjectTitleOnPage,
+    removeAllTodosListItems
+  }
 })()
 
 

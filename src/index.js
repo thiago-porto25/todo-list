@@ -21,6 +21,14 @@ console.log(userObj)
 
 
 
+const variablesForControl = (function() {
+  let pageInitiated = false
+
+  return { pageInitiated }
+})()
+
+
+
 const localStorageHandler = (function() {
   const update = () => {
     localStorage.setItem('user', JSON.stringify(userObj))
@@ -67,6 +75,8 @@ const init = (function () {
     ]
 
     localStorageHandler.update()
+
+    variablesForControl.pageInitiated = true
   }
   const renderCustomAppPage = () => {
     const userName = userObj.name
@@ -88,6 +98,8 @@ const init = (function () {
 
       mainDomHandler.createTodosListItem(title, id)
     })
+
+    variablesForControl.pageInitiated = true
   }
 
   return { renderDefaultAppPage, renderCustomAppPage }
@@ -100,7 +112,10 @@ const eventsHandler = (function(){
   const addListenerLogin = () => {
     const _loginForm = document.querySelector('#loginForm')
     _loginForm.addEventListener('submit', prevent.Refresh)
-    _loginForm.addEventListener('submit', init.renderDefaultAppPage)
+    _loginForm.addEventListener('submit', () => {
+      init.renderDefaultAppPage()
+      variablesForControl.pageInitiated = true
+    })
   }
   const addListenerNewTask = () => {
     const newTodoButton = document.querySelector('.newTodoButton')
@@ -110,8 +125,45 @@ const eventsHandler = (function(){
     const newProjectButton = document.querySelector('#newProjectButton')
     newProjectButton.addEventListener('click', modalDomHandler.displayNewProjectModal)
   }
+  const addListenerDeleteProject = () => {
+    const projects = document.querySelectorAll('.projectsListItem')
+    let deleteId
 
-  return { addListenerLogin, addListenerNewTask, addListenerNewProject }
+    projects.forEach(project => {
+      const deleteButton = project.lastChild
+
+      deleteButton.addEventListener('click', (e) => {
+        modalDomHandler.displayDeleteProjectModal()
+
+        const projectListItem = e.target.parentElement
+
+        deleteId = projectListItem.getAttribute('data-deleteproject')
+      })
+    })
+    const confirmDeleteButton = document.querySelector('#finalDeleteProjectButton')
+
+    confirmDeleteButton.addEventListener('click', () => {
+      modalDomHandler.removeDeleteProjectModal()
+
+      navDomHandler.removeProjectListItem(deleteId)
+
+      mainDomHandler.removeProjectTitleOnPage()
+      mainDomHandler.removeAllTodosListItems()
+
+      userObj.projects.splice(deleteId, 1)
+      localStorageHandler.update()
+
+      deleteId = undefined
+      console.log(userObj)
+    })
+  }
+
+  return {
+    addListenerLogin,
+    addListenerNewTask,
+    addListenerNewProject,
+    addListenerDeleteProject
+  }
 })()
 
 
@@ -130,13 +182,12 @@ const loginHandler = (function() {
   }
 
   _loginLogic()
-  eventsHandler.addListenerNewTask()
-  eventsHandler.addListenerNewProject()
 
-  const projects = document.querySelectorAll('.projectsListItem')
-  projects.forEach(project => {
-    const deleteButton = project.lastChild
-
-    deleteButton.addEventListener('click', modalDomHandler.displayDeleteProjectModal)
-  })
+  if (variablesForControl.pageInitiated) {
+    eventsHandler.addListenerNewTask()
+    eventsHandler.addListenerNewProject()
+    eventsHandler.addListenerDeleteProject()
+  }
+  
+  
 })()
