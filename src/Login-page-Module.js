@@ -20,7 +20,7 @@ const loginPageCreator = (function() {
     headerLogin.setAttribute('class', 'headerLogin')
 
     const header = document.createElement('header')
-    header.textContent = 'Log in Todo List'
+    header.textContent = 'Log in to Todo List'
 
     const loginContainer = document.createElement('div')
     loginContainer.setAttribute('class', 'loginContainer')
@@ -28,7 +28,9 @@ const loginPageCreator = (function() {
     const input = document.createElement('input')
     input.setAttribute('type', 'text')
     input.setAttribute('required', '')
+    input.setAttribute('maxlength', '10')
     input.setAttribute('class', 'inputText')
+    input.setAttribute('id', 'inputUserFirstName')
 
     const span = document.createElement('span')
     span.setAttribute('class', 'floating-label')
@@ -70,8 +72,12 @@ const loginPageRenderer = (function() {
 
     body.appendChild(loginPage)
   }
+  const deleteLoginPage = () => {
+    const loginPage = document.querySelector('#loginPage')
+    loginPage.remove()
+  }
 
-  return { initialRender }
+  return { initialRender, deleteLoginPage }
 })()
 
 export { loginPageRenderer }
