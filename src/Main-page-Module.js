@@ -202,7 +202,7 @@ const modalsCreator = (function() {
 
   const _createModalNewTask = () => {
     const modalNewTask = document.createElement('div')
-    modalNewTask.setAttribute('class', 'modalTemplate modalNewProject')
+    modalNewTask.setAttribute('class', 'modalTemplate modalNewTask')
 
     const closeBtn = document.createElement('span')
     closeBtn.setAttribute('class', 'close')
@@ -215,7 +215,7 @@ const modalsCreator = (function() {
 
     const titleInput = document.createElement('input')
     titleInput.setAttribute('class', 'modalInput newTaskInput')
-    titleInput.setAttribute('maxlength', '50')
+    titleInput.setAttribute('maxlength', '30')
     titleInput.setAttribute('type', 'text')
     titleInput.setAttribute('placeholder', 'I want to...')
     titleInput.setAttribute('required', '')
@@ -551,12 +551,12 @@ const modalDomHandler = (function() {
     newProjectModal.style.display = 'none'
   }
   const displayNewTaskModal = () => {
-    const newTaskModal = document.querySelector('.modalNewProject')
+    const newTaskModal = document.querySelector('.modalNewTask')
     _displayModal()
     newTaskModal.style.display = 'flex'
   }
   const removeNewTaskModal = () => {
-    const newTaskModal = document.querySelector('.modalNewProject')
+    const newTaskModal = document.querySelector('.modalNewTask')
     _removeModal()
     newTaskModal.style.display = 'none'
   }

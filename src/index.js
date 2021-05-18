@@ -106,8 +106,12 @@ const eventsHandler = (function(){
     const newTodoButton = document.querySelector('.newTodoButton')
     newTodoButton.addEventListener('click', modalDomHandler.displayNewTaskModal)
   }
+  const addListenerNewProject = () => {
+    const newProjectButton = document.querySelector('#newProjectButton')
+    newProjectButton.addEventListener('click', modalDomHandler.displayNewProjectModal)
+  }
 
-  return { addListenerLogin, addListenerNewTask }
+  return { addListenerLogin, addListenerNewTask, addListenerNewProject }
 })()
 
 
@@ -118,14 +122,14 @@ const loginHandler = (function() {
     if (userObj.name === undefined) {
       loginPageRenderer.initialRender()
       eventsHandler.addListenerLogin()
-      eventsHandler.addListenerNewTask()
     }
 
     else {
       init.renderCustomAppPage()
-      eventsHandler.addListenerNewTask()
     }
   }
 
   _loginLogic()
+  eventsHandler.addListenerNewTask()
+  eventsHandler.addListenerNewProject()
 })()
