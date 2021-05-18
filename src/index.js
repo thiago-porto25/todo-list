@@ -68,7 +68,6 @@ const init = (function () {
 
     localStorageHandler.update()
   }
-
   const renderCustomAppPage = () => {
     const userName = userObj.name
 
@@ -96,27 +95,37 @@ const init = (function () {
 
 
 
-const loginHandler = (function() {
-  const _loginLogic = () => {
-    if (userObj.name === undefined) {
-      loginPageRenderer.initialRender()
 
-      const _loginForm = document.querySelector('#loginForm')
-      _loginForm.addEventListener('submit', prevent.Refresh)
-      _loginForm.addEventListener('submit', init.renderDefaultAppPage)
-    }
-
-    else {
-      init.renderCustomAppPage()
-    }
+const eventsHandler = (function(){
+  const addListenerLogin = () => {
+    const _loginForm = document.querySelector('#loginForm')
+    _loginForm.addEventListener('submit', prevent.Refresh)
+    _loginForm.addEventListener('submit', init.renderDefaultAppPage)
+  }
+  const addListenerNewTask = () => {
+    const newTodoButton = document.querySelector('.newTodoButton')
+    newTodoButton.addEventListener('click', modalDomHandler.displayNewTaskModal)
   }
 
-  _loginLogic()
+  return { addListenerLogin, addListenerNewTask }
 })()
 
 
 
-const eventsHandler = (function(){
-  const newTodoButton = document.querySelector('.newTodoButton')
-  newTodoButton.addEventListener('click', modalDomHandler.displayNewTaskModal)
+
+const loginHandler = (function() {
+  const _loginLogic = () => {
+    if (userObj.name === undefined) {
+      loginPageRenderer.initialRender()
+      eventsHandler.addListenerLogin()
+      eventsHandler.addListenerNewTask()
+    }
+
+    else {
+      init.renderCustomAppPage()
+      eventsHandler.addListenerNewTask()
+    }
+  }
+
+  _loginLogic()
 })()

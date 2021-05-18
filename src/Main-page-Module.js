@@ -536,14 +536,18 @@ const modalDomHandler = (function() {
     let modal = document.querySelector('.modal')
     modal.style.display = 'flex'
   }
+  const _removeModal = () => {
+    let modal = document.querySelector('.modal')
+    modal.style.display = 'none'
+  }
   const displayNewProjectModal = () => {
     const newProjectModal = document.querySelector('.modalNewProject')
-    
+    _displayModal()
     newProjectModal.style.display = 'flex'
   }
   const removeNewProjectModal = () => {
     const newProjectModal = document.querySelector('.modalNewProject')
-    
+    _removeModal()
     newProjectModal.style.display = 'none'
   }
   const displayNewTaskModal = () => {
@@ -553,36 +557,37 @@ const modalDomHandler = (function() {
   }
   const removeNewTaskModal = () => {
     const newTaskModal = document.querySelector('.modalNewProject')
-    
+    _removeModal()
     newTaskModal.style.display = 'none'
   }
   const displayTaskInfoModal = () => {
     const taskInfoModal = document.querySelector('.modalTaskInfo')
-    
+    _displayModal()
     taskInfoModal.style.display = 'flex'
   }
   const removeTaskInfoModal = () => {
     const taskInfoModal = document.querySelector('.modalTaskInfo')
-    
+    _removeModal()
     taskInfoModal.style.display = 'none'
   }
   const displayDeleteProjectModal = () => {
     const deleteProjectModal = document.querySelector('#deleteProject')
-    
+    _displayModal()
     deleteProjectModal.style.display = 'flex'
   }
   const removeDeleteProjectModal = () => {
     const deleteProjectModal = document.querySelector('#deleteProject')
-    
+    _removeModal()
     deleteProjectModal.style.display = 'none'
   }
   const displayDeleteTaskModal = () => {
     const deleteTaskModal = document.querySelector('#deleteTask')
-    
+    _displayModal()
     deleteTaskModal.style.display = 'flex'
   }
   const removeDeleteTaskModal = () => {
     const deleteTaskModal = document.querySelector('#deleteTask')
+    _removeModal()
     deleteTaskModal.style.display = 'none'
   }
   //create an edit date and edit notes function
