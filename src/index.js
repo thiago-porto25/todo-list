@@ -56,6 +56,7 @@ const init = (function () {
     appPageRenderer.initialRender()
 
     navDomHandler.createProjectListItem('Default', '0')
+    navDomHandler.addClickedStyle(0)
     mainDomHandler.setProjectTitleOnPage('Default')
     mainDomHandler.setUserNameOnPage(userName)
     mainDomHandler.createTodosListItem('My first Todo ', '0')
@@ -90,6 +91,7 @@ const init = (function () {
 
       navDomHandler.createProjectListItem(name, id)
     })
+    navDomHandler.addClickedStyle(0)
     mainDomHandler.setProjectTitleOnPage(userObj.projects[0].name)
 
     userObj.projects[0].todos.forEach(todo => {
@@ -149,6 +151,7 @@ const eventsHandler = (function(){
 
       mainDomHandler.removeProjectTitleOnPage()
       mainDomHandler.removeAllTodosListItems()
+      mainDomHandler.createEmptyTodosText()
 
       userObj.projects.splice(deleteId, 1)
       localStorageHandler.update()

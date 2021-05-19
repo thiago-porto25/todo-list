@@ -1,3 +1,4 @@
+
 const navCreator = (function() {
   const _createLogo = () => {
     const logoContainer = document.createElement('div')
@@ -457,8 +458,16 @@ const navDomHandler = (function() {
 
     projectDeleted.remove()
   }
+  const addClickedStyle = (id) => {
+    const projectClicked = document.querySelector(`[data-deleteproject='${id}']`)
+    projectClicked.setAttribute('class', 'projectsListItem projectsClicked')
+  }
 
-  return { createProjectListItem, removeProjectListItem }
+  return {
+    createProjectListItem, 
+    removeProjectListItem,
+    addClickedStyle
+  }
 })()
 
 
@@ -539,12 +548,27 @@ const mainDomHandler = (function(){
     todosList.forEach(todo => todo.remove())
   }
 
+  const createEmptyTodosText = () => {
+    const textContainer = document.createElement('div')
+    textContainer.setAttribute('class', 'textContainer')
+
+    const text = document.createElement('p')
+    text.textContent = 'It seems that you have no Todos!'
+
+    textContainer.appendChild(text)
+
+    const projectTodosContainer = document.querySelector('.projectTodosContainer')
+    projectTodosContainer.appendChild(textContainer)
+
+  }
+
   return {
     setUserNameOnPage,
     setProjectTitleOnPage,
     createTodosListItem,
     removeProjectTitleOnPage,
-    removeAllTodosListItems
+    removeAllTodosListItems,
+    createEmptyTodosText
   }
 })()
 

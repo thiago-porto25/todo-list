@@ -178,15 +178,22 @@ nav {
   background-color: rgb(228, 226, 226);
 }
 .projectsClicked {
-  background-color: rgb(228, 226, 226);
+  background-color: rgb(206, 202, 202) !important;
 }
 .fa-project-delete {
   position: absolute;
-  right: 1rem;
+  right: 0.5rem;
   font-size: 16px !important;
 }
 .projectsListItem p {
   margin: 0;
+}
+.projectsListItem i {
+  height: 3rem;
+  width: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 
@@ -310,6 +317,17 @@ main {
 }
 .fa-pen:hover {
   color: rgb(45, 45, 146);
+}
+.textContainer {
+  height: 75%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.textContainer p {
+  font-weight: bold;
+  font-style: italic;
 }
 
 
