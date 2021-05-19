@@ -210,6 +210,7 @@ const modalsCreator = (function() {
     closeBtn.innerHTML = '&times;'
 
     const form = document.createElement('form')
+    form.setAttribute('id', 'newTaskModalForm')
     
     const taskTitleContainer = document.createElement('div')
     taskTitleContainer.setAttribute('id', 'taskTitleContainer')
@@ -439,7 +440,7 @@ const navDomHandler = (function() {
   const createProjectListItem = (name, id) => {
     const listItem = document.createElement('li')
     listItem.setAttribute('class', 'projectsListItem')
-    listItem.setAttribute('data-deleteProject', id)
+    listItem.setAttribute('data-deleteproject', id)
 
     const para = document.createElement('p')
     para.textContent = name
@@ -559,7 +560,11 @@ const mainDomHandler = (function(){
 
     const projectTodosContainer = document.querySelector('.projectTodosContainer')
     projectTodosContainer.appendChild(textContainer)
+  }
 
+  const removeEmptyTodosText = () => {
+    const textContainer = document.querySelector('.textContainer')
+    textContainer.remove()
   }
 
   return {
@@ -568,7 +573,8 @@ const mainDomHandler = (function(){
     createTodosListItem,
     removeProjectTitleOnPage,
     removeAllTodosListItems,
-    createEmptyTodosText
+    createEmptyTodosText,
+    removeEmptyTodosText
   }
 })()
 
