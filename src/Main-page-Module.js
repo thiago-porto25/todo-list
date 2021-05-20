@@ -173,7 +173,7 @@ const mainCreator = (function() {
 
 const modalsCreator = (function() {
   const _createModalNewProject = () => {
-    const modalNewProject = document.createElement('div')
+    const modalNewProject = document.createElement('form')
     modalNewProject.setAttribute('class', 'modalTemplate modalNewProject')
 
     const closeBtn = document.createElement('span')
@@ -217,7 +217,7 @@ const modalsCreator = (function() {
 
     const titleInput = document.createElement('input')
     titleInput.setAttribute('class', 'modalInput newTaskInput')
-    titleInput.setAttribute('maxlength', '30')
+    titleInput.setAttribute('maxlength', '35')
     titleInput.setAttribute('type', 'text')
     titleInput.setAttribute('placeholder', 'I want to...')
     titleInput.setAttribute('required', '')
@@ -519,15 +519,13 @@ const mainDomHandler = (function(){
 
     const infoButton = document.createElement('button')
     infoButton.setAttribute('class', 'button taskButton')
-    infoButton.setAttribute('id', 'editTodo')
     const infoIcon = document.createElement('i')
-    infoIcon.setAttribute('class', 'fas fa-task fa-info-circle')
+    infoIcon.setAttribute('class', 'editTodo fas fa-task fa-info-circle')
 
     const deleteButton = document.createElement('button')
     deleteButton.setAttribute('class', 'button taskButton')
-    deleteButton.setAttribute('id', 'deleteTodo')
     const deleteIcon = document.createElement('i')
-    deleteIcon.setAttribute('class', 'fas fa-task fa-trash-alt')
+    deleteIcon.setAttribute('class', 'deleteTodo fas fa-task fa-trash-alt')
 
     infoButton.appendChild(infoIcon)
     buttonsContainer.appendChild(infoButton)
@@ -600,7 +598,11 @@ const modalDomHandler = (function() {
   }
   const removeNewProjectModal = () => {
     const newProjectModal = document.querySelector('.modalNewProject')
+    const name = newProjectModal.querySelector('input')
+
     _removeModal()
+
+    name.value = ''
     newProjectModal.style.display = 'none'
   }
   const displayNewTaskModal = () => {
@@ -610,7 +612,15 @@ const modalDomHandler = (function() {
   }
   const removeNewTaskModal = () => {
     const newTaskModal = document.querySelector('.modalNewTask')
+    const title = newTaskModal.querySelector('#taskTitleContainer input')
+    const dueDate = newTaskModal.querySelector('#dueDateContainer input')
+    const notes = newTaskModal.querySelector('#notesContainer textarea')
+
     _removeModal()
+
+    title.value = ''
+    dueDate.value = ''
+    notes.value = ''
     newTaskModal.style.display = 'none'
   }
   const displayTaskInfoModal = () => {

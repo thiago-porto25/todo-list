@@ -14,10 +14,8 @@ const prevent = (function() {
 
 
 const _localStorageUserObj = JSON.parse(localStorage.getItem('user'))
-console.log(_localStorageUserObj)
 
 let userObj = localStorage.getItem('user') !== null ? _localStorageUserObj : {}
-console.log(userObj)
 
 
 
@@ -28,8 +26,26 @@ const variablesForControl = (function() {
     const project = document.querySelector('.projectsClicked')
     return project
   }
+  const resetDeleteTaskId = () => {
+    const allTasks = document.querySelectorAll('.todosListItem')
+    let counter = 0
 
-  return { pageInitiated, setCurrentlyDisplayedProject }
+    allTasks.forEach(task => {
+      task.setAttribute('data-deletetodo', counter)
+      ++counter
+    })
+  }
+  const resetDeleteProjectId = () => {
+    const allProjects = document.querySelectorAll('.projectsListItem')
+    let counter = 0
+
+    allProjects.forEach(project => {
+      project.setAttribute('data-deleteproject', counter)
+      ++counter
+    })
+  }
+
+  return { pageInitiated, setCurrentlyDisplayedProject, resetDeleteTaskId, resetDeleteProjectId }
 })()
 
 
@@ -48,7 +64,8 @@ const TaskFactory = (title, dueDate, notes) => {
   const task = {
     title,
     dueDate,
-    notes
+    notes,
+    isDone: false
   }
   return { ...task }
 }
@@ -60,7 +77,7 @@ const ProjectFactory = (name) => {
     name,
     todos: []
   }
-  return { project }
+  return { ...project }
 }
 
 
@@ -86,7 +103,8 @@ const init = (function () {
         todos: [{
           title: 'My first Todo',
           dueDate: undefined,
-          notes: 'Yay! I must start creating todos.'
+          notes: 'Yay! I must start creating todos.',
+          isDone: false
         }]
       }
     ]
@@ -130,8 +148,9 @@ const init = (function () {
 const eventsHandler = (function(){
   const addListenerSubmitNewTask = () => {
     const form = document.querySelector('#newTaskModalForm')
-    console.log(form)
+    
     form.addEventListener('submit', prevent.Refresh)
+
     form.addEventListener('submit', () => {
       const title = document.querySelector('#taskTitleContainer input').value
       const dueDate = document.querySelector('#dueDateContainer input').value
@@ -141,6 +160,11 @@ const eventsHandler = (function(){
 
       const currentProject = variablesForControl.setCurrentlyDisplayedProject()
       const currentProjectId = currentProject.getAttribute('data-deleteproject')
+
+      if(userObj.projects[currentProjectId].todos[0] === undefined) {
+        mainDomHandler.removeEmptyTodosText()
+      }
+
       const taskId = userObj.projects[currentProjectId].todos.push(newTask) - 1
 
       mainDomHandler.createTodosListItem(title, taskId)
@@ -150,16 +174,59 @@ const eventsHandler = (function(){
       modalDomHandler.removeNewTaskModal()
     })
   }
+  const addListenerDeleteTaskOnStart = () => {
+    const deleteTaskButtons = document.querySelectorAll('.deleteTodo')
+
+    deleteTaskButtons.forEach(button => {
+      button.addEventListener('click', e => {
+        if(button === e.target) {
+          const currentProject = variablesForControl.setCurrentlyDisplayedProject()
+          const currentProjectId = currentProject.getAttribute('data-deleteproject')
+          const taskId = e.target.parentElement.parentElement.parentElement.getAttribute('data-deletetodo')
+          const taskDomElement = e.target.parentElement.parentElement.parentElement
+
+          taskDomElement.remove()
+          userObj.projects[currentProjectId].todos.splice(taskId, 1)
+
+          localStorageHandler.update()
+          variablesForControl.resetDeleteTaskId()
+
+          if (userObj.projects[currentProjectId].todos[0] === undefined) {
+            mainDomHandler.createEmptyTodosText()
+          }
+        }
+      })
+    })
+  }
   const addListenerNewTask = () => {
     const newTodoButton = document.querySelector('.newTodoButton')
     newTodoButton.addEventListener('click', modalDomHandler.displayNewTaskModal)
     addListenerSubmitNewTask()
   }
+  const addListenerSubmitNewProject = () => {
+    const form = document.querySelector('.modalNewProject')
+
+    form.addEventListener('submit', prevent.Refresh)
+    form.addEventListener('submit', () => {
+      const projectName = form.querySelector('input').value
+
+      const newProject = ProjectFactory(projectName)
+
+      const projectId = userObj.projects.push(newProject) - 1
+
+      navDomHandler.createProjectListItem(projectName, projectId)
+
+      localStorageHandler.update()
+
+      modalDomHandler.removeNewProjectModal()
+    })
+  }
   const addListenerNewProject = () => {
     const newProjectButton = document.querySelector('#newProjectButton')
     newProjectButton.addEventListener('click', modalDomHandler.displayNewProjectModal)
+    addListenerSubmitNewProject()
   }
-  const addListenerDeleteProject = () => {
+  const addListenerDeleteProjectOnStart = () => {
     const projects = document.querySelectorAll('.projectsListItem')
     let deleteId
 
@@ -187,9 +254,9 @@ const eventsHandler = (function(){
 
       userObj.projects.splice(deleteId, 1)
       localStorageHandler.update()
+      variablesForControl.resetDeleteProjectId()
 
       deleteId = undefined
-      console.log(userObj)
     })
   }
   const addListenerLogin = () => {
@@ -199,7 +266,8 @@ const eventsHandler = (function(){
       init.renderDefaultAppPage()
       addListenerNewTask()
       addListenerNewProject()
-      addListenerDeleteProject()
+      addListenerDeleteProjectOnStart()
+      addListenerDeleteTaskOnStart()
     })
   }
   
@@ -208,8 +276,9 @@ const eventsHandler = (function(){
     addListenerLogin,
     addListenerNewTask,
     addListenerNewProject,
-    addListenerDeleteProject,
-    addListenerSubmitNewTask
+    addListenerDeleteProjectOnStart,
+    addListenerSubmitNewTask,
+    addListenerDeleteTaskOnStart
   }
 })()
 
@@ -233,7 +302,8 @@ const loginHandler = (function() {
   if (variablesForControl.pageInitiated) {
     eventsHandler.addListenerNewTask()
     eventsHandler.addListenerNewProject()
-    eventsHandler.addListenerDeleteProject()
+    eventsHandler.addListenerDeleteProjectOnStart()
+    eventsHandler.addListenerDeleteTaskOnStart()
   }
   
   
