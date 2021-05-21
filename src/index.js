@@ -173,6 +173,23 @@ const changesHandler = (function() {
 
 
 const eventsHandler = (function(){
+  const addListenerToDeleteCreatedTask = (taskElem, projectId) => {
+    const taskId = taskElem.getAttribute('data-deletetodo')
+    const deleteButton = taskElem.querySelector('.deleteTodo')
+    deleteButton.addEventListener('click', () => {
+      userObj.projects[projectId].todos.splice(taskId, 1)
+
+      taskElem.remove()
+
+      localStorageHandler.update()
+
+      variablesForControl.resetDeleteTaskId()
+
+      if (userObj.projects[projectId].todos[0] === undefined) {
+        mainDomHandler.createEmptyTodosText()
+      }
+    })
+  }
   const addListenerSubmitNewTask = () => {
     const form = document.querySelector('#newTaskModalForm')
     
@@ -194,7 +211,9 @@ const eventsHandler = (function(){
 
       const taskId = userObj.projects[currentProjectId].todos.push(newTask) - 1
 
-      mainDomHandler.createTodosListItem(title, taskId)
+      const createdTask = mainDomHandler.createTodosListItem(title, taskId)
+
+      addListenerToDeleteCreatedTask(createdTask, currentProjectId)
 
       localStorageHandler.update()
 

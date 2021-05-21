@@ -538,6 +538,8 @@ const mainDomHandler = (function(){
     const todosList = document.querySelector('.todosList')
 
     todosList.appendChild(todosListItem)
+
+    return todosListItem
   }
 
   const removeAllTodosListItems = () => {
