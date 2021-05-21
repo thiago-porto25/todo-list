@@ -542,7 +542,6 @@ const mainDomHandler = (function(){
 
   const removeAllTodosListItems = () => {
     const todosList = document.querySelectorAll('.todosListItem')
-    console.log(todosList)
 
     todosList.forEach(todo => todo.remove())
   }

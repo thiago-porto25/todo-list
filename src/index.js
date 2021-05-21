@@ -146,6 +146,23 @@ const init = (function () {
 
 
 
+const changesHandler = (function() {
+  const displayNewProject = (id) => {
+    mainDomHandler.removeAllTodosListItems()
+    mainDomHandler.removeProjectTitleOnPage()
+    const project = userObj.projects[id]
+
+    mainDomHandler.setProjectTitleOnPage(project.name)
+
+    project.todos.forEach(todo => {
+      mainDomHandler.createTodosListItem(todo.title, project.todos.indexOf(todo))
+    })
+  }
+
+  return { displayNewProject }
+})()
+
+
 
 const eventsHandler = (function(){
   const addListenerSubmitNewTask = () => {
@@ -176,30 +193,6 @@ const eventsHandler = (function(){
       modalDomHandler.removeNewTaskModal()
     })
   }
-  const addListenerDeleteTaskOnStart = () => {
-    const deleteTaskButtons = document.querySelectorAll('.deleteTodo')
-
-    deleteTaskButtons.forEach(button => {
-      button.addEventListener('click', e => {
-        if(button === e.target) {
-          const currentProject = variablesForControl.setCurrentlyDisplayedProject()
-          const currentProjectId = currentProject.getAttribute('data-deleteproject')
-          const taskId = e.target.parentElement.parentElement.parentElement.getAttribute('data-deletetodo')
-          const taskDomElement = e.target.parentElement.parentElement.parentElement
-
-          taskDomElement.remove()
-          userObj.projects[currentProjectId].todos.splice(taskId, 1)
-
-          localStorageHandler.update()
-          variablesForControl.resetDeleteTaskId()
-
-          if (userObj.projects[currentProjectId].todos[0] === undefined) {
-            mainDomHandler.createEmptyTodosText()
-          }
-        }
-      })
-    })
-  }
   const addListenerNewTask = () => {
     const newTodoButton = document.querySelector('.newTodoButton')
     newTodoButton.addEventListener('click', modalDomHandler.displayNewTaskModal)
@@ -227,6 +220,30 @@ const eventsHandler = (function(){
     const newProjectButton = document.querySelector('#newProjectButton')
     newProjectButton.addEventListener('click', modalDomHandler.displayNewProjectModal)
     addListenerSubmitNewProject()
+  }
+  const addListenerDeleteTaskOnStart = () => {
+    const deleteTaskButtons = document.querySelectorAll('.deleteTodo')
+
+    deleteTaskButtons.forEach(button => {
+      button.addEventListener('click', e => {
+        if(button === e.target) {
+          const currentProject = variablesForControl.setCurrentlyDisplayedProject()
+          const currentProjectId = currentProject.getAttribute('data-deleteproject')
+          const taskId = e.target.parentElement.parentElement.parentElement.getAttribute('data-deletetodo')
+          const taskDomElement = e.target.parentElement.parentElement.parentElement
+
+          taskDomElement.remove()
+          userObj.projects[currentProjectId].todos.splice(taskId, 1)
+
+          localStorageHandler.update()
+          variablesForControl.resetDeleteTaskId()
+
+          if (userObj.projects[currentProjectId].todos[0] === undefined) {
+            mainDomHandler.createEmptyTodosText()
+          }
+        }
+      })
+    })
   }
   const addListenerDeleteProjectOnStart = () => {
     const projects = document.querySelectorAll('.projectsListItem')
@@ -264,8 +281,30 @@ const eventsHandler = (function(){
       deleteId = undefined
     })
   }
-  const addListenerNavigateProjects = () => {
-    
+  const addListenerNavigateProjectsOnStart = () => {
+    const projectList = document.querySelectorAll('.projectsListItem')
+    projectList.forEach(project => {
+      project.addEventListener('click', e => {
+        if(e.target !== project) return
+
+        const checkIfDisplayed = project.getAttribute('class')
+
+        if(checkIfDisplayed === 'projectsListItem projectsClicked') return
+
+        const displayedProject = document.querySelector('.projectsClicked')
+        const displayedProjectId = displayedProject.getAttribute('data-deleteproject')
+
+        const clickedProjectId = e.target.getAttribute('data-deleteproject')
+
+        displayedProject.setAttribute('class', 'projectsListItem')
+        userObj.projects[displayedProjectId].isDisplayed = false
+
+        navDomHandler.addClickedStyle(clickedProjectId)
+        userObj.projects[clickedProjectId].isDisplayed = true
+
+        changesHandler.displayNewProject(clickedProjectId)
+      })
+    })
   }
   const addListenerLogin = () => {
     const _loginForm = document.querySelector('#loginForm')
@@ -276,6 +315,7 @@ const eventsHandler = (function(){
       addListenerNewProject()
       addListenerDeleteProjectOnStart()
       addListenerDeleteTaskOnStart()
+      addListenerNavigateProjectsOnStart()
     })
   }
   
@@ -287,6 +327,7 @@ const eventsHandler = (function(){
     addListenerDeleteProjectOnStart,
     addListenerSubmitNewTask,
     addListenerDeleteTaskOnStart,
+    addListenerNavigateProjectsOnStart
   }
 })()
 
@@ -312,6 +353,7 @@ const loginHandler = (function() {
     eventsHandler.addListenerNewProject()
     eventsHandler.addListenerDeleteProjectOnStart()
     eventsHandler.addListenerDeleteTaskOnStart()
+    eventsHandler.addListenerNavigateProjectsOnStart()
   }
   
   
