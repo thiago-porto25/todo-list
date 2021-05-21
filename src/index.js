@@ -139,6 +139,8 @@ const init = (function () {
     })
 
     variablesForControl.pageInitiated = true
+
+    if(userObj.projects[0].todos[0] === undefined) mainDomHandler.createEmptyTodosText()
   }
 
   return { renderDefaultAppPage, renderCustomAppPage }
@@ -154,9 +156,14 @@ const changesHandler = (function() {
 
     mainDomHandler.setProjectTitleOnPage(project.name)
 
-    project.todos.forEach(todo => {
-      mainDomHandler.createTodosListItem(todo.title, project.todos.indexOf(todo))
-    })
+    if(project.todos[0] === undefined) mainDomHandler.createEmptyTodosText()
+
+    else {
+      project.todos.forEach(todo => {
+        mainDomHandler.createTodosListItem(todo.title, project.todos.indexOf(todo))
+      })
+      mainDomHandler.removeEmptyTodosText()
+    }
   }
 
   return { displayNewProject }

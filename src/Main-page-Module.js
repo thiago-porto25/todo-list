@@ -548,15 +548,20 @@ const mainDomHandler = (function(){
 
   const createEmptyTodosText = () => {
     const textContainer = document.createElement('div')
-    textContainer.setAttribute('class', 'textContainer')
+    if(undefined == document.querySelector('.textContainer')) {
+      textContainer.setAttribute('class', 'textContainer')
 
-    const text = document.createElement('p')
-    text.textContent = 'It seems that you have no Todos!'
+      const text = document.createElement('p')
+      text.textContent = 'It seems that you have no Todos!'
 
-    textContainer.appendChild(text)
+      textContainer.appendChild(text)
 
-    const projectTodosContainer = document.querySelector('.projectTodosContainer')
-    projectTodosContainer.appendChild(textContainer)
+      const projectTodosContainer = document.querySelector('.projectTodosContainer')
+
+      projectTodosContainer.appendChild(textContainer)
+    }
+
+    
   }
 
   const removeEmptyTodosText = () => {
