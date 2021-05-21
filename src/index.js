@@ -149,20 +149,21 @@ const init = (function () {
 
 
 const changesHandler = (function() {
-  const displayNewProject = (id) => {
+  const displayNewProject = (id, lastProjectId) => {
     mainDomHandler.removeAllTodosListItems()
     mainDomHandler.removeProjectTitleOnPage()
     const project = userObj.projects[id]
+    const lastProject = userObj.projects[lastProjectId]
 
     mainDomHandler.setProjectTitleOnPage(project.name)
 
     if(project.todos[0] === undefined) mainDomHandler.createEmptyTodosText()
 
     else {
+      if(lastProject.todos[0] === undefined) mainDomHandler.removeEmptyTodosText()
       project.todos.forEach(todo => {
         mainDomHandler.createTodosListItem(todo.title, project.todos.indexOf(todo))
       })
-      mainDomHandler.removeEmptyTodosText()
     }
   }
 
@@ -309,7 +310,8 @@ const eventsHandler = (function(){
         navDomHandler.addClickedStyle(clickedProjectId)
         userObj.projects[clickedProjectId].isDisplayed = true
 
-        changesHandler.displayNewProject(clickedProjectId)
+        changesHandler.displayNewProject(clickedProjectId, displayedProjectId)
+        addListenerDeleteTaskOnStart()
       })
     })
   }
