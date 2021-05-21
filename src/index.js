@@ -75,6 +75,7 @@ const TaskFactory = (title, dueDate, notes) => {
 const ProjectFactory = (name) => {
   const project = {
     name,
+    isDisplayed: false,
     todos: []
   }
   return { ...project }
@@ -99,7 +100,8 @@ const init = (function () {
     userObj.name = userName
     userObj.projects = [ 
       { 
-        name: 'Default', 
+        name: 'Default',
+        isDisplayed: true,
         todos: [{
           title: 'My first Todo',
           dueDate: undefined,
@@ -248,16 +250,22 @@ const eventsHandler = (function(){
 
       navDomHandler.removeProjectListItem(deleteId)
 
-      mainDomHandler.removeProjectTitleOnPage()
-      mainDomHandler.removeAllTodosListItems()
-      mainDomHandler.createEmptyTodosText()
+      if(userObj.projects[deleteId].isDisplayed){
+        mainDomHandler.removeProjectTitleOnPage()
+        mainDomHandler.removeAllTodosListItems()
+        mainDomHandler.createEmptyTodosText()
+      }
 
       userObj.projects.splice(deleteId, 1)
+      
       localStorageHandler.update()
       variablesForControl.resetDeleteProjectId()
 
       deleteId = undefined
     })
+  }
+  const addListenerNavigateProjects = () => {
+    
   }
   const addListenerLogin = () => {
     const _loginForm = document.querySelector('#loginForm')
@@ -278,7 +286,7 @@ const eventsHandler = (function(){
     addListenerNewProject,
     addListenerDeleteProjectOnStart,
     addListenerSubmitNewTask,
-    addListenerDeleteTaskOnStart
+    addListenerDeleteTaskOnStart,
   }
 })()
 
