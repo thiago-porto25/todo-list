@@ -155,14 +155,13 @@ const changesHandler = (function() {
     mainDomHandler.removeAllTodosListItems()
     mainDomHandler.removeProjectTitleOnPage()
     const project = userObj.projects[id]
-    const lastProject = userObj.projects[lastProjectId]
 
     mainDomHandler.setProjectTitleOnPage(project.name)
 
     if(project.todos[0] === undefined) mainDomHandler.createEmptyTodosText()
 
     else {
-      if(lastProject.todos[0] === undefined && notNew) mainDomHandler.removeEmptyTodosText()
+      //if(lastProject.todos[0] === undefined && notNew) mainDomHandler.removeEmptyTodosText()
       project.todos.forEach(todo => {
         mainDomHandler.createTodosListItem(todo.title, project.todos.indexOf(todo))
       })
@@ -222,25 +221,22 @@ const eventsHandler = (function(){
       })
     })
   }
-  const addListenerToNavigateCreatedProject = (id) => {
-    const project = document.querySelector(`[data-deleteproject='${id}']`)
+  const addListenerToNavigateCreatedProject = (elem) => {
+    elem.addEventListener('click', (e) => {
+      const projectId = elem.getAttribute('data-deleteproject')
+      if(e.target !== elem) return
 
-    project.addEventListener('click', (e) => {
-      if(e.target !== project) return
-
-      const projectClass = project.getAttribute('class')
+      const projectClass = elem.getAttribute('class')
       if(projectClass === 'projectsListItem projectsClicked') return
 
-      const displayedProject = document.querySelector('.projectsClicked')
-      const displayedProjectId = displayedProject.getAttribute('data-deleteproject')
+      const allProjects = document.querySelectorAll('.projectsListItem')
+      allProjects.forEach(projectItem => projectItem.setAttribute('class', 'projectsListItem'))
+      userObj.projects.forEach(projectArr => projectArr.isDisplayed = false)
 
-      displayedProject.setAttribute('class', 'projectsListItem')
-      userObj.projects[displayedProjectId].isDisplayed = false
+      navDomHandler.addClickedStyle(projectId)
+      userObj.projects[projectId].isDisplayed = true
 
-      navDomHandler.addClickedStyle(id)
-      userObj.projects[id].isDisplayed = true
-
-      changesHandler.displayNewProject(id, displayedProjectId, false)
+      changesHandler.displayNewProject(projectId, false)
     })
 
   }
@@ -297,7 +293,7 @@ const eventsHandler = (function(){
       modalDomHandler.removeNewProjectModal()
 
       addListenerToDeleteCreatedProject(elem)
-      //addListenerToNavigateCreatedProject(elem)
+      addListenerToNavigateCreatedProject(elem)
     })
   }
   const addListenerNewProject = () => {
@@ -376,18 +372,16 @@ const eventsHandler = (function(){
 
         if(checkIfDisplayed === 'projectsListItem projectsClicked') return
 
-        const displayedProject = document.querySelector('.projectsClicked')
-        const displayedProjectId = displayedProject.getAttribute('data-deleteproject')
-
         const clickedProjectId = e.target.getAttribute('data-deleteproject')
 
-        displayedProject.setAttribute('class', 'projectsListItem')
-        userObj.projects[displayedProjectId].isDisplayed = false
+        const allProjects = document.querySelectorAll('.projectsListItem')
+        allProjects.forEach(projectItem => projectItem.setAttribute('class', 'projectsListItem'))
+        userObj.projects.forEach(projectArr => projectArr.isDisplayed = false)
 
-        navDomHandler.addClickedStyle(clickedProjectId)
+        e.target.setAttribute('class', 'projectsListItem projectsClicked')
         userObj.projects[clickedProjectId].isDisplayed = true
 
-        changesHandler.displayNewProject(clickedProjectId, displayedProjectId)
+        changesHandler.displayNewProject(clickedProjectId)
         addListenerDeleteTaskOnStart()
       })
     })
