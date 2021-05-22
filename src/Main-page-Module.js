@@ -341,7 +341,7 @@ const modalsCreator = (function() {
     return modalTaskInfo
   }
 
-  const _createModalDeleteProject = () => {
+  const createModalDeleteProjectOnStart = () => {
     const deleteProject = document.createElement('div')
     deleteProject.setAttribute('class', 'modalTemplate modalDelete')
     deleteProject.setAttribute('id', 'deleteProject')
@@ -358,7 +358,7 @@ const modalsCreator = (function() {
 
     const deleteButton = document.createElement('button')
     deleteButton.setAttribute('class', 'button cancelAndDelete')
-    deleteButton.setAttribute('id', 'finalDeleteProjectButton')
+    deleteButton.setAttribute('id', 'finalDeleteProjectButtonOnStart')
     deleteButton.textContent = 'Delete'
 
     const cancelButton = document.createElement('button')
@@ -376,7 +376,7 @@ const modalsCreator = (function() {
     return deleteProject
   }
 
-  const _createModalDeleteTask = () => {
+  const createModalDeleteProjectCreated = () => {
     const deleteTask = document.createElement('div')
     deleteTask.setAttribute('class', 'modalTemplate modalDelete')
     deleteTask.setAttribute('id', 'deleteTask')
@@ -386,14 +386,14 @@ const modalsCreator = (function() {
     closeBtn.innerHTML = '&times;'
 
     const para = document.createElement('p')
-    para.textContent = 'Are you sure you want to delete this Task?'
+    para.textContent = 'Are you sure you want to delete this Project?'
 
     const buttonsContainer = document.createElement('div')
     buttonsContainer.setAttribute('id', 'deleteAndCancelContainer')
 
     const deleteButton = document.createElement('button')
     deleteButton.setAttribute('class', 'button cancelAndDelete')
-    deleteButton.setAttribute('id', 'finalDeleteTaskButton')
+    deleteButton.setAttribute('id', 'finalDeleteProjectButtonCreated')
     deleteButton.textContent = 'Delete'
 
     const cancelButton = document.createElement('button')
@@ -418,19 +418,15 @@ const modalsCreator = (function() {
     const newProject = _createModalNewProject()
     const newTask = _createModalNewTask()
     const taskInfo = _createModalTaskInfo()
-    const deleteProject = _createModalDeleteProject()
-    const deleteTask = _createModalDeleteTask()
 
     modal.appendChild(newProject)
     modal.appendChild(newTask)
     modal.appendChild(taskInfo)
-    modal.appendChild(deleteProject)
-    modal.appendChild(deleteTask)
 
     return modal
   }
 
-  return { createModal }
+  return { createModal, createModalDeleteProjectOnStart, createModalDeleteProjectCreated }
 })()
 
 
@@ -453,9 +449,11 @@ const navDomHandler = (function() {
 
     const projectsList = document.querySelector('#projectsList')
     projectsList.appendChild(listItem)
+
+    return listItem
   }
   const removeProjectListItem = (id) => {
-    const projectDeleted = document.querySelector(`[data-deleteproject='${id}']`)
+    const projectDeleted = document.querySelector(`[data-deleteproject = '${id}']`)
 
     projectDeleted.remove()
   }
@@ -639,25 +637,33 @@ const modalDomHandler = (function() {
     _removeModal()
     taskInfoModal.style.display = 'none'
   }
-  const displayDeleteProjectModal = () => {
-    const deleteProjectModal = document.querySelector('#deleteProject')
+  const displayDeleteProjectModalOnStart = () => {
+    let modal = document.querySelector('.modal')
+    const deleteProjectModal = modalsCreator.createModalDeleteProjectOnStart()
+
     _displayModal()
+
+    modal.appendChild(deleteProjectModal)
     deleteProjectModal.style.display = 'flex'
   }
-  const removeDeleteProjectModal = () => {
+  const removeDeleteProjectModalOnStart = () => {
     const deleteProjectModal = document.querySelector('#deleteProject')
     _removeModal()
-    deleteProjectModal.style.display = 'none'
+    deleteProjectModal.remove()
   }
-  const displayDeleteTaskModal = () => {
-    const deleteTaskModal = document.querySelector('#deleteTask')
+  const displayDeleteProjectModalCreated = () => {
+    let modal = document.querySelector('.modal')
+    const deleteTaskModal = modalsCreator.createModalDeleteProjectCreated()
+
     _displayModal()
+
+    modal.appendChild(deleteTaskModal)
     deleteTaskModal.style.display = 'flex'
   }
-  const removeDeleteTaskModal = () => {
+  const removeDeleteProjectModalCreated = () => {
     const deleteTaskModal = document.querySelector('#deleteTask')
     _removeModal()
-    deleteTaskModal.style.display = 'none'
+    deleteTaskModal.remove()
   }
   //create an edit date and edit notes function
 
@@ -666,13 +672,13 @@ const modalDomHandler = (function() {
     displayNewProjectModal,
     displayNewTaskModal,
     displayTaskInfoModal,
-    displayDeleteProjectModal,
-    displayDeleteTaskModal,
+    displayDeleteProjectModalOnStart,
+    displayDeleteProjectModalCreated,
     removeNewProjectModal,
     removeNewTaskModal,
     removeTaskInfoModal,
-    removeDeleteProjectModal,
-    removeDeleteTaskModal
+    removeDeleteProjectModalOnStart,
+    removeDeleteProjectModalCreated
   }
 })()
 

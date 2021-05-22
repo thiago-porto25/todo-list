@@ -654,10 +654,10 @@ main {
   width: 6rem;
   margin-left: 1rem;
 }
-#finalDeleteProjectButton {
+#finalDeleteProjectButtonOnStart {
   background-color: red;
 }
-#finalDeleteProjectButton:hover {
+#finalDeleteProjectButtonOnStart:hover {
   background-color: rgb(247, 39, 39);
 }
 
@@ -666,10 +666,10 @@ main {
 #deleteTask {
   display: none;
 }
-#finalDeleteTaskButton {
+#finalDeleteProjectButtonCreated {
   background-color: red;
 }
-#finalDeleteTaskButton:hover {
+#finalDeleteProjectButtonCreated:hover {
   background-color: rgb(247, 39, 39);
 }
 

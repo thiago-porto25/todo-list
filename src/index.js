@@ -22,6 +22,8 @@ let userObj = localStorage.getItem('user') !== null ? _localStorageUserObj : {}
 const variablesForControl = (function() {
   let pageInitiated = false
 
+  let isNotNew = true
+
   const setCurrentlyDisplayedProject = () => {
     const project = document.querySelector('.projectsClicked')
     return project
@@ -45,7 +47,7 @@ const variablesForControl = (function() {
     })
   }
 
-  return { pageInitiated, setCurrentlyDisplayedProject, resetDeleteTaskId, resetDeleteProjectId }
+  return { pageInitiated, isNotNew, setCurrentlyDisplayedProject, resetDeleteTaskId, resetDeleteProjectId }
 })()
 
 
@@ -149,7 +151,7 @@ const init = (function () {
 
 
 const changesHandler = (function() {
-  const displayNewProject = (id, lastProjectId) => {
+  const displayNewProject = (id, lastProjectId, notNew = true) => {
     mainDomHandler.removeAllTodosListItems()
     mainDomHandler.removeProjectTitleOnPage()
     const project = userObj.projects[id]
@@ -160,7 +162,7 @@ const changesHandler = (function() {
     if(project.todos[0] === undefined) mainDomHandler.createEmptyTodosText()
 
     else {
-      if(lastProject.todos[0] === undefined) mainDomHandler.removeEmptyTodosText()
+      if(lastProject.todos[0] === undefined && notNew) mainDomHandler.removeEmptyTodosText()
       project.todos.forEach(todo => {
         mainDomHandler.createTodosListItem(todo.title, project.todos.indexOf(todo))
       })
@@ -173,8 +175,8 @@ const changesHandler = (function() {
 
 
 const eventsHandler = (function(){
-  const addListenerToDeleteCreatedTask = (taskElem, projectId) => {
-    const taskId = taskElem.getAttribute('data-deletetodo')
+  const addListenerToDeleteCreatedTask = (taskId, projectId) => {
+    const taskElem = document.querySelector(`[data-deletetodo = '${taskId}']`)
     const deleteButton = taskElem.querySelector('.deleteTodo')
     deleteButton.addEventListener('click', () => {
       userObj.projects[projectId].todos.splice(taskId, 1)
@@ -190,31 +192,57 @@ const eventsHandler = (function(){
       }
     })
   }
-  const addListenerToDeleteCreatedProject = (id) => {
-    const deleteButton = document.querySelector(`[data-deleteproject = '${id}']`).lastChild
+  const addListenerToDeleteCreatedProject = (elem) => {
+    const deleteButton = elem.lastChild
+    let id
+    
 
-    deleteButton.addEventListener('click', () => {
-      modalDomHandler.displayDeleteProjectModal()
-    })
+    deleteButton.addEventListener('click', (e) => {
+      modalDomHandler.displayDeleteProjectModalCreated()
 
-    const confirmDeleteButton = document.querySelector('#finalDeleteProjectButton')
+      id = e.target.parentElement.getAttribute('data-deleteproject')
 
-    confirmDeleteButton.addEventListener('click', () => {
-      modalDomHandler.removeDeleteProjectModal()
+      const confirmDeleteButton = document.querySelector('#finalDeleteProjectButtonCreated')
+    
+      confirmDeleteButton.addEventListener('click', () => {
+        modalDomHandler.removeDeleteProjectModalCreated()
 
-      navDomHandler.removeProjectListItem(id)
+        navDomHandler.removeProjectListItem(id)
 
-      if(userObj.projects[id].isDisplayed){
-        mainDomHandler.removeProjectTitleOnPage()
-        mainDomHandler.removeAllTodosListItems()
-        mainDomHandler.createEmptyTodosText()
-      }
+        if(userObj.projects[id].isDisplayed){
+          mainDomHandler.removeProjectTitleOnPage()
+          mainDomHandler.removeAllTodosListItems()
+          mainDomHandler.createEmptyTodosText()
+        }
 
-      userObj.projects.splice(id, 1)
+        userObj.projects.splice(id, 1)
       
-      localStorageHandler.update()
-      variablesForControl.resetDeleteProjectId()
+        localStorageHandler.update()
+        variablesForControl.resetDeleteProjectId()
+      })
     })
+  }
+  const addListenerToNavigateCreatedProject = (id) => {
+    const project = document.querySelector(`[data-deleteproject='${id}']`)
+
+    project.addEventListener('click', (e) => {
+      if(e.target !== project) return
+
+      const projectClass = project.getAttribute('class')
+      if(projectClass === 'projectsListItem projectsClicked') return
+
+      const displayedProject = document.querySelector('.projectsClicked')
+      const displayedProjectId = displayedProject.getAttribute('data-deleteproject')
+
+      displayedProject.setAttribute('class', 'projectsListItem')
+      userObj.projects[displayedProjectId].isDisplayed = false
+
+      navDomHandler.addClickedStyle(id)
+      userObj.projects[id].isDisplayed = true
+
+      changesHandler.displayNewProject(id, displayedProjectId, false)
+    })
+
   }
   const addListenerSubmitNewTask = () => {
     const form = document.querySelector('#newTaskModalForm')
@@ -237,9 +265,9 @@ const eventsHandler = (function(){
 
       const taskId = userObj.projects[currentProjectId].todos.push(newTask) - 1
 
-      const createdTask = mainDomHandler.createTodosListItem(title, taskId)
+      mainDomHandler.createTodosListItem(title, taskId)
 
-      addListenerToDeleteCreatedTask(createdTask, currentProjectId)
+      addListenerToDeleteCreatedTask(taskId, currentProjectId)
 
       localStorageHandler.update()
 
@@ -262,13 +290,14 @@ const eventsHandler = (function(){
 
       const projectId = userObj.projects.push(newProject) - 1
 
-      navDomHandler.createProjectListItem(projectName, projectId)
+      const elem = navDomHandler.createProjectListItem(projectName, projectId)
 
       localStorageHandler.update()
 
       modalDomHandler.removeNewProjectModal()
 
-      addListenerToDeleteCreatedProject(projectId)
+      addListenerToDeleteCreatedProject(elem)
+      //addListenerToNavigateCreatedProject(elem)
     })
   }
   const addListenerNewProject = () => {
@@ -308,32 +337,33 @@ const eventsHandler = (function(){
       const deleteButton = project.lastChild
 
       deleteButton.addEventListener('click', (e) => {
-        modalDomHandler.displayDeleteProjectModal()
+        modalDomHandler.displayDeleteProjectModalOnStart()
 
         const projectListItem = e.target.parentElement
 
         deleteId = projectListItem.getAttribute('data-deleteproject')
+
+        const confirmDeleteButton = document.querySelector('#finalDeleteProjectButtonOnStart')
+
+        confirmDeleteButton.addEventListener('click', () => {
+          modalDomHandler.removeDeleteProjectModalOnStart()
+    
+          navDomHandler.removeProjectListItem(deleteId)
+    
+          if(userObj.projects[deleteId].isDisplayed){
+            mainDomHandler.removeProjectTitleOnPage()
+            mainDomHandler.removeAllTodosListItems()
+            mainDomHandler.createEmptyTodosText()
+          }
+    
+          userObj.projects.splice(deleteId, 1)
+          
+          localStorageHandler.update()
+          variablesForControl.resetDeleteProjectId()
+    
+          deleteId = undefined
+        })
       })
-    })
-    const confirmDeleteButton = document.querySelector('#finalDeleteProjectButton')
-
-    confirmDeleteButton.addEventListener('click', () => {
-      modalDomHandler.removeDeleteProjectModal()
-
-      navDomHandler.removeProjectListItem(deleteId)
-
-      if(userObj.projects[deleteId].isDisplayed){
-        mainDomHandler.removeProjectTitleOnPage()
-        mainDomHandler.removeAllTodosListItems()
-        mainDomHandler.createEmptyTodosText()
-      }
-
-      userObj.projects.splice(deleteId, 1)
-      
-      localStorageHandler.update()
-      variablesForControl.resetDeleteProjectId()
-
-      deleteId = undefined
     })
   }
   const addListenerNavigateProjectsOnStart = () => {
