@@ -190,6 +190,32 @@ const eventsHandler = (function(){
       }
     })
   }
+  const addListenerToDeleteCreatedProject = (id) => {
+    const deleteButton = document.querySelector(`[data-deleteproject = '${id}']`).lastChild
+
+    deleteButton.addEventListener('click', () => {
+      modalDomHandler.displayDeleteProjectModal()
+    })
+
+    const confirmDeleteButton = document.querySelector('#finalDeleteProjectButton')
+
+    confirmDeleteButton.addEventListener('click', () => {
+      modalDomHandler.removeDeleteProjectModal()
+
+      navDomHandler.removeProjectListItem(id)
+
+      if(userObj.projects[id].isDisplayed){
+        mainDomHandler.removeProjectTitleOnPage()
+        mainDomHandler.removeAllTodosListItems()
+        mainDomHandler.createEmptyTodosText()
+      }
+
+      userObj.projects.splice(id, 1)
+      
+      localStorageHandler.update()
+      variablesForControl.resetDeleteProjectId()
+    })
+  }
   const addListenerSubmitNewTask = () => {
     const form = document.querySelector('#newTaskModalForm')
     
@@ -241,6 +267,8 @@ const eventsHandler = (function(){
       localStorageHandler.update()
 
       modalDomHandler.removeNewProjectModal()
+
+      addListenerToDeleteCreatedProject(projectId)
     })
   }
   const addListenerNewProject = () => {
