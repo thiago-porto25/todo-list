@@ -321,7 +321,7 @@ main {
 .textContainer {
   height: 75%;
   width: 100%;
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
 }
@@ -335,6 +335,10 @@ main {
 .projectTodosContainer {
   width: 34rem;
   height: 23rem;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 .todosList {
   padding: 0;

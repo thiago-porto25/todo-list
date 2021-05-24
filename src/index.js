@@ -142,7 +142,7 @@ const init = (function () {
 
     variablesForControl.pageInitiated = true
 
-    if(userObj.projects[0].todos[0] === undefined) mainDomHandler.createEmptyTodosText()
+    if(userObj.projects[0].todos[0] === undefined) mainDomHandler.renderEmptyTodosText()
   }
 
   return { renderDefaultAppPage, renderCustomAppPage }
@@ -152,16 +152,16 @@ const init = (function () {
 
 const changesHandler = (function() {
   const displayNewProject = (id, lastProjectId, notNew = true) => {
+    mainDomHandler.unrenderEmptyTodosText()
     mainDomHandler.removeAllTodosListItems()
     mainDomHandler.removeProjectTitleOnPage()
     const project = userObj.projects[id]
 
     mainDomHandler.setProjectTitleOnPage(project.name)
 
-    if(project.todos[0] === undefined) mainDomHandler.createEmptyTodosText()
+    if(project.todos[0] === undefined) mainDomHandler.renderEmptyTodosText()
 
     else {
-      //if(lastProject.todos[0] === undefined && notNew) mainDomHandler.removeEmptyTodosText()
       project.todos.forEach(todo => {
         mainDomHandler.createTodosListItem(todo.title, project.todos.indexOf(todo))
       })
@@ -187,14 +187,13 @@ const eventsHandler = (function(){
       variablesForControl.resetDeleteTaskId()
 
       if (userObj.projects[projectId].todos[0] === undefined) {
-        mainDomHandler.createEmptyTodosText()
+        mainDomHandler.renderEmptyTodosText()
       }
     })
   }
   const addListenerToDeleteCreatedProject = (elem) => {
     const deleteButton = elem.lastChild
     let id
-    
 
     deleteButton.addEventListener('click', (e) => {
       modalDomHandler.displayDeleteProjectModalCreated()
@@ -211,7 +210,7 @@ const eventsHandler = (function(){
         if(userObj.projects[id].isDisplayed){
           mainDomHandler.removeProjectTitleOnPage()
           mainDomHandler.removeAllTodosListItems()
-          mainDomHandler.createEmptyTodosText()
+          mainDomHandler.renderEmptyTodosText()
         }
 
         userObj.projects.splice(id, 1)
@@ -227,6 +226,7 @@ const eventsHandler = (function(){
       if(e.target !== elem) return
 
       const projectClass = elem.getAttribute('class')
+
       if(projectClass === 'projectsListItem projectsClicked') return
 
       const allProjects = document.querySelectorAll('.projectsListItem')
@@ -238,7 +238,6 @@ const eventsHandler = (function(){
 
       changesHandler.displayNewProject(projectId, false)
     })
-
   }
   const addListenerSubmitNewTask = () => {
     const form = document.querySelector('#newTaskModalForm')
@@ -255,9 +254,7 @@ const eventsHandler = (function(){
       const currentProject = variablesForControl.setCurrentlyDisplayedProject()
       const currentProjectId = currentProject.getAttribute('data-deleteproject')
 
-      if(userObj.projects[currentProjectId].todos[0] === undefined) {
-        mainDomHandler.removeEmptyTodosText()
-      }
+      mainDomHandler.unrenderEmptyTodosText()
 
       const taskId = userObj.projects[currentProjectId].todos.push(newTask) - 1
 
@@ -319,7 +316,7 @@ const eventsHandler = (function(){
           variablesForControl.resetDeleteTaskId()
 
           if (userObj.projects[currentProjectId].todos[0] === undefined) {
-            mainDomHandler.createEmptyTodosText()
+            mainDomHandler.renderEmptyTodosText()
           }
         }
       })
@@ -349,7 +346,7 @@ const eventsHandler = (function(){
           if(userObj.projects[deleteId].isDisplayed){
             mainDomHandler.removeProjectTitleOnPage()
             mainDomHandler.removeAllTodosListItems()
-            mainDomHandler.createEmptyTodosText()
+            mainDomHandler.renderEmptyTodosText()
           }
     
           userObj.projects.splice(deleteId, 1)
@@ -375,7 +372,9 @@ const eventsHandler = (function(){
         const clickedProjectId = e.target.getAttribute('data-deleteproject')
 
         const allProjects = document.querySelectorAll('.projectsListItem')
+
         allProjects.forEach(projectItem => projectItem.setAttribute('class', 'projectsListItem'))
+
         userObj.projects.forEach(projectArr => projectArr.isDisplayed = false)
 
         e.target.setAttribute('class', 'projectsListItem projectsClicked')

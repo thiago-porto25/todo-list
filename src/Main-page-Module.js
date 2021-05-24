@@ -548,25 +548,26 @@ const mainDomHandler = (function(){
 
   const createEmptyTodosText = () => {
     const textContainer = document.createElement('div')
-    if(undefined == document.querySelector('.textContainer')) {
-      textContainer.setAttribute('class', 'textContainer')
+    textContainer.setAttribute('class', 'textContainer')
 
-      const text = document.createElement('p')
-      text.textContent = 'It seems that you have no Todos!'
+    const text = document.createElement('p')
+    text.textContent = 'It seems that you have no Todos!'
 
-      textContainer.appendChild(text)
+    textContainer.appendChild(text)
 
-      const projectTodosContainer = document.querySelector('.projectTodosContainer')
+    const projectTodosContainer = document.querySelector('.projectTodosContainer')
 
-      projectTodosContainer.appendChild(textContainer)
-    }
-
-    
+    projectTodosContainer.appendChild(textContainer)
   }
 
-  const removeEmptyTodosText = () => {
+  const unrenderEmptyTodosText = () => {
     const textContainer = document.querySelector('.textContainer')
-    textContainer.remove()
+    textContainer.style.display = 'none'
+  }
+
+  const renderEmptyTodosText = () => {
+    const textContainer = document.querySelector('.textContainer')
+    textContainer.style.display = 'flex'
   }
 
   return {
@@ -576,7 +577,8 @@ const mainDomHandler = (function(){
     removeProjectTitleOnPage,
     removeAllTodosListItems,
     createEmptyTodosText,
-    removeEmptyTodosText
+    unrenderEmptyTodosText,
+    renderEmptyTodosText
   }
 })()
 
@@ -701,6 +703,7 @@ const appPageRenderer = (function() {
     appPage.appendChild(modal)
 
     body.appendChild(appPage)
+    mainDomHandler.createEmptyTodosText()
   }
 
   return { initialRender }
