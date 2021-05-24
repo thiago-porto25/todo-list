@@ -548,7 +548,7 @@ const mainDomHandler = (function(){
 
   const createEmptyTodosText = () => {
     const textContainer = document.createElement('div')
-    textContainer.setAttribute('class', 'textContainer')
+    textContainer.setAttribute('class', 'textContainer emptyTodos')
 
     const text = document.createElement('p')
     text.textContent = 'It seems that you have no Todos!'
@@ -561,12 +561,36 @@ const mainDomHandler = (function(){
   }
 
   const unrenderEmptyTodosText = () => {
-    const textContainer = document.querySelector('.textContainer')
+    const textContainer = document.querySelector('.emptyTodos')
     textContainer.style.display = 'none'
   }
 
   const renderEmptyTodosText = () => {
-    const textContainer = document.querySelector('.textContainer')
+    const textContainer = document.querySelector('.emptyTodos')
+    textContainer.style.display = 'flex'
+  }
+
+  const createNoProjectsText = () => {
+    const noProjectsTextContainer = document.createElement('div')
+    noProjectsTextContainer.setAttribute('class', 'textContainer noProjects')
+
+    const text = document.createElement('p')
+    text.textContent = 'It seems that you have no Projects!'
+
+    noProjectsTextContainer.appendChild(text)
+
+    const projectTodosContainer = document.querySelector('.projectTodosContainer')
+    
+    projectTodosContainer.appendChild(noProjectsTextContainer)
+  }
+
+  const unrenderNoProjectsText = () => {
+    const textContainer = document.querySelector('.noProjects')
+    textContainer.style.display = 'none'
+  }
+
+  const renderNoProjectsText = () => {
+    const textContainer = document.querySelector('.noProjects')
     textContainer.style.display = 'flex'
   }
 
@@ -578,7 +602,10 @@ const mainDomHandler = (function(){
     removeAllTodosListItems,
     createEmptyTodosText,
     unrenderEmptyTodosText,
-    renderEmptyTodosText
+    renderEmptyTodosText,
+    createNoProjectsText,
+    unrenderNoProjectsText,
+    renderNoProjectsText
   }
 })()
 
@@ -704,6 +731,7 @@ const appPageRenderer = (function() {
 
     body.appendChild(appPage)
     mainDomHandler.createEmptyTodosText()
+    mainDomHandler.createNoProjectsText()
   }
 
   return { initialRender }

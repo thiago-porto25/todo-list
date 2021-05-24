@@ -318,10 +318,15 @@ main {
 .fa-pen:hover {
   color: rgb(45, 45, 146);
 }
+.noProjects {
+  display: none;
+}
+.emptyTodos {
+  display: none;
+}
 .textContainer {
   height: 75%;
   width: 100%;
-  display: none;
   justify-content: center;
   align-items: center;
 }

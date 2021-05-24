@@ -123,26 +123,33 @@ const init = (function () {
     appPageRenderer.initialRender()
 
     mainDomHandler.setUserNameOnPage(userName)
-    userObj.projects.forEach(project => {
-      const id = userObj.projects.indexOf(project)
-      const name = project.name
-
-      navDomHandler.createProjectListItem(name, id)
-    })
-    navDomHandler.addClickedStyle('0')
-    mainDomHandler.setProjectTitleOnPage(userObj.projects[0].name)
-
-    userObj.projects[0].todos.forEach(todo => {
-      console.log(userObj.projects[0].todos)
-      const title = todo.title
-      const id = userObj.projects[0].todos.indexOf(todo)
-
-      mainDomHandler.createTodosListItem(title, id)
-    })
-
-    variablesForControl.pageInitiated = true
-
-    if(userObj.projects[0].todos[0] === undefined) mainDomHandler.renderEmptyTodosText()
+    
+    if(userObj.projects[0] === undefined){
+      mainDomHandler.renderNoProjectsText()
+      variablesForControl.pageInitiated = true
+    }
+    else {
+      userObj.projects.forEach(project => {
+        const id = userObj.projects.indexOf(project)
+        const name = project.name
+  
+        navDomHandler.createProjectListItem(name, id)
+      })
+      navDomHandler.addClickedStyle('0')
+      mainDomHandler.setProjectTitleOnPage(userObj.projects[0].name)
+  
+      userObj.projects[0].todos.forEach(todo => {
+        console.log(userObj.projects[0].todos)
+        const title = todo.title
+        const id = userObj.projects[0].todos.indexOf(todo)
+  
+        mainDomHandler.createTodosListItem(title, id)
+      })
+  
+      variablesForControl.pageInitiated = true
+  
+      if(userObj.projects[0].todos[0] === undefined) mainDomHandler.renderEmptyTodosText()
+    }
   }
 
   return { renderDefaultAppPage, renderCustomAppPage }
@@ -152,6 +159,7 @@ const init = (function () {
 
 const changesHandler = (function() {
   const displayNewProject = (id) => {
+    mainDomHandler.unrenderNoProjectsText()
     mainDomHandler.unrenderEmptyTodosText()
     mainDomHandler.removeAllTodosListItems()
     mainDomHandler.removeProjectTitleOnPage()
@@ -168,23 +176,23 @@ const changesHandler = (function() {
     }
   }
   const displayNextProject = (deletedId) => {
-    //se tiver projeto acima
     if(deletedId != 0) {
       const nextProjectId = deletedId - 1
       navDomHandler.addClickedStyle(nextProjectId)
       userObj.projects[nextProjectId].isDisplayed = true
       displayNewProject(nextProjectId)
     }
-    //se tiver projeto abaixo
+
     if(deletedId == 0 && userObj.projects[0] != undefined) {
       navDomHandler.addClickedStyle(deletedId)
       userObj.projects[deletedId].isDisplayed = true
       displayNewProject(deletedId)
     }
 
-    //se ele for o unico projeto
     if (deletedId == 0 && userObj.projects[0] == undefined) {
-      //display no projects text
+      mainDomHandler.renderNoProjectsText()
+      mainDomHandler.unrenderEmptyTodosText()
+      mainDomHandler.setProjectTitleOnPage('')
     }
   }
 
@@ -306,6 +314,10 @@ const eventsHandler = (function(){
 
       const elem = navDomHandler.createProjectListItem(projectName, projectId)
 
+      if(projectId == 0) {
+        userObj.projects[projectId].isDisplayed = true
+      }
+
       localStorageHandler.update()
 
       modalDomHandler.removeNewProjectModal()
@@ -400,6 +412,7 @@ const eventsHandler = (function(){
         userObj.projects.forEach(projectArr => projectArr.isDisplayed = false)
 
         e.target.setAttribute('class', 'projectsListItem projectsClicked')
+        console.log(userObj.projects[clickedProjectId].isDisplayed)
         userObj.projects[clickedProjectId].isDisplayed = true
 
         changesHandler.displayNewProject(clickedProjectId)
