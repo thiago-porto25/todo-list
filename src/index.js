@@ -151,7 +151,7 @@ const init = (function () {
 
 
 const changesHandler = (function() {
-  const displayNewProject = (id, lastProjectId, notNew = true) => {
+  const displayNewProject = (id) => {
     mainDomHandler.unrenderEmptyTodosText()
     mainDomHandler.removeAllTodosListItems()
     mainDomHandler.removeProjectTitleOnPage()
@@ -167,8 +167,28 @@ const changesHandler = (function() {
       })
     }
   }
+  const displayNextProject = (deletedId) => {
+    //se tiver projeto acima
+    if(deletedId != 0) {
+      const nextProjectId = deletedId - 1
+      navDomHandler.addClickedStyle(nextProjectId)
+      userObj.projects[nextProjectId].isDisplayed = true
+      displayNewProject(nextProjectId)
+    }
+    //se tiver projeto abaixo
+    if(deletedId == 0 && userObj.projects[0] != undefined) {
+      navDomHandler.addClickedStyle(deletedId)
+      userObj.projects[deletedId].isDisplayed = true
+      displayNewProject(deletedId)
+    }
 
-  return { displayNewProject }
+    //se ele for o unico projeto
+    if (deletedId == 0 && userObj.projects[0] == undefined) {
+      //display no projects text
+    }
+  }
+
+  return { displayNewProject, displayNextProject }
 })()
 
 
@@ -217,6 +237,7 @@ const eventsHandler = (function(){
       
         localStorageHandler.update()
         variablesForControl.resetDeleteProjectId()
+        changesHandler.displayNextProject(id)
       })
     })
   }
@@ -236,7 +257,7 @@ const eventsHandler = (function(){
       navDomHandler.addClickedStyle(projectId)
       userObj.projects[projectId].isDisplayed = true
 
-      changesHandler.displayNewProject(projectId, false)
+      changesHandler.displayNewProject(projectId)
     })
   }
   const addListenerSubmitNewTask = () => {
@@ -353,7 +374,8 @@ const eventsHandler = (function(){
           
           localStorageHandler.update()
           variablesForControl.resetDeleteProjectId()
-    
+          changesHandler.displayNextProject(deleteId)
+
           deleteId = undefined
         })
       })
