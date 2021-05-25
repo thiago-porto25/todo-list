@@ -345,6 +345,9 @@ main {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+.projectTodosContainer::-webkit-scrollbar {
+  display: none;
+}
 .todosList {
   padding: 0;
   margin: 2rem;
