@@ -202,6 +202,26 @@ const changesHandler = (function() {
 
 
 const eventsHandler = (function(){
+  const addListenerCloseNewTask = () => {
+    const closeBtn = document.querySelector('.modalNewTask .close')
+    closeBtn.addEventListener('click', modalDomHandler.removeNewTaskModal)
+  }
+  const addListenerCloseNewProject = () => {
+    const closeBtn = document.querySelector('.modalNewProject .close')
+    closeBtn.addEventListener('click', modalDomHandler.removeNewProjectModal)
+  }
+  const addListenerCloseDeleteCreatedProject = () => {
+    const closeBtn = document.querySelector('#deleteTask .close')
+    const cancelBtn = document.querySelector('#cancelDeleteTaskButton')
+    closeBtn.addEventListener('click', modalDomHandler.removeDeleteProjectModalCreated)
+    cancelBtn.addEventListener('click', modalDomHandler.removeDeleteProjectModalCreated)
+  }
+  const addListenerCloseDeleteOnStartProject = () => {
+    const closeBtn = document.querySelector('#deleteProject .close')
+    const cancelBtn = document.querySelector('#cancelDeleteProjectButton')
+    closeBtn.addEventListener('click', modalDomHandler.removeDeleteProjectModalOnStart)
+    cancelBtn.addEventListener('click', modalDomHandler.removeDeleteProjectModalOnStart)
+  }
   const addListenerToDeleteCreatedTask = (taskId, projectId) => {
     const taskElem = document.querySelector(`[data-deletetodo = '${taskId}']`)
     const deleteButton = taskElem.querySelector('.deleteTodo')
@@ -225,6 +245,7 @@ const eventsHandler = (function(){
 
     deleteButton.addEventListener('click', (e) => {
       modalDomHandler.displayDeleteProjectModalCreated()
+      addListenerCloseDeleteCreatedProject()
 
       id = e.target.parentElement.getAttribute('data-deleteproject')
 
@@ -299,7 +320,9 @@ const eventsHandler = (function(){
   const addListenerNewTask = () => {
     const newTodoButton = document.querySelector('.newTodoButton')
     newTodoButton.addEventListener('click', modalDomHandler.displayNewTaskModal)
+    const newTaskModal = document.querySelector('.modalNewTask')
     addListenerSubmitNewTask()
+    addListenerCloseNewTask()
   }
   const addListenerSubmitNewProject = () => {
     const form = document.querySelector('.modalNewProject')
@@ -330,6 +353,7 @@ const eventsHandler = (function(){
     const newProjectButton = document.querySelector('#newProjectButton')
     newProjectButton.addEventListener('click', modalDomHandler.displayNewProjectModal)
     addListenerSubmitNewProject()
+    addListenerCloseNewProject()
   }
   const addListenerDeleteTaskOnStart = () => {
     const deleteTaskButtons = document.querySelectorAll('.deleteTodo')
@@ -364,6 +388,7 @@ const eventsHandler = (function(){
 
       deleteButton.addEventListener('click', (e) => {
         modalDomHandler.displayDeleteProjectModalOnStart()
+        addListenerCloseDeleteOnStartProject()
 
         const projectListItem = e.target.parentElement
 
