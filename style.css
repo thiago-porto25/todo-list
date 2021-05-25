@@ -599,11 +599,15 @@ main {
 
 /* Task info Modal */
 .modalTaskInfo {
-  display: none;
   width: 30rem;
   height: 25rem;
   background-color: white;
-  
+}
+#modalTaskInfoOnStart {
+  display: none;
+}
+#modalTaskInfoCreated {
+  display: none;
 }
 #infoContainer {
   display: flex;
