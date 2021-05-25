@@ -284,19 +284,21 @@ const modalsCreator = (function() {
     return modalNewTask
   }
 
-  const _createModalTaskInfo = () => {
+  const createModalTaskInfoOnStart = () => {
     const modalTaskInfo = document.createElement('div')
     modalTaskInfo.setAttribute('class', 'modalTemplate modalTaskInfo')
+    modalTaskInfo.setAttribute('id', 'modalTaskInfoOnStart')
 
     const form = document.createElement('form')
     form.setAttribute('id', 'infoContainer')
+    form.setAttribute('class', 'taskInfoFormOnStart')
 
     const closeBtn = document.createElement('span')
     closeBtn.setAttribute('class', 'close')
     closeBtn.innerHTML = '&times;'
 
     const infoTitle = document.createElement('textarea')
-    infoTitle.setAttribute('class', 'modalInput newTaskInput')
+    infoTitle.setAttribute('class', 'modalInput newTaskInput infoTitleOnStart')
     infoTitle.setAttribute('id', 'infoTitle')
     infoTitle.setAttribute('required', '')
 
@@ -305,7 +307,7 @@ const modalsCreator = (function() {
     labelDate.textContent = 'Due Date'
     
     const infoDate = document.createElement('input')
-    infoDate.setAttribute('class', 'modalInput')
+    infoDate.setAttribute('class', 'modalInput infoDateOnStart')
     infoDate.setAttribute('type', 'date')
 
     const labelNotes = document.createElement('label')
@@ -313,7 +315,7 @@ const modalsCreator = (function() {
     labelNotes.textContent = 'Notes'
 
     const infoNotes = document.createElement('textarea')
-    infoNotes.setAttribute('class', 'modalInput')
+    infoNotes.setAttribute('class', 'modalInput notesInfoOnStart')
     infoNotes.setAttribute('id', 'notesInfo')
     infoNotes.setAttribute('maxlength', '150')
     infoNotes.setAttribute('rows', '3')
@@ -324,6 +326,67 @@ const modalsCreator = (function() {
 
     const saveEditButton = document.createElement('button')
     saveEditButton.setAttribute('class', 'button addTaskButton saveEditButton')
+    saveEditButton.setAttribute('id', 'saveEditButtonOnStart')
+    saveEditButton.textContent = 'Save changes'
+
+    saveEditButtonContainer.appendChild(saveEditButton)
+
+    form.appendChild(closeBtn)
+    form.appendChild(infoTitle)
+    form.appendChild(labelDate)
+    form.appendChild(infoDate)
+    form.appendChild(labelNotes)
+    form.appendChild(infoNotes)
+    form.appendChild(saveEditButtonContainer)
+
+    modalTaskInfo.appendChild(form)
+
+    return modalTaskInfo
+  }
+
+  const createModalTaskInfoCreated = () => {
+    const modalTaskInfo = document.createElement('div')
+    modalTaskInfo.setAttribute('class', 'modalTemplate modalTaskInfo')
+    modalTaskInfo.setAttribute('id', 'modalTaskInfoCreated')
+
+    const form = document.createElement('form')
+    form.setAttribute('id', 'infoContainer')
+    form.setAttribute('class', 'taskInfoFormCreated')
+
+    const closeBtn = document.createElement('span')
+    closeBtn.setAttribute('class', 'close')
+    closeBtn.innerHTML = '&times;'
+
+    const infoTitle = document.createElement('textarea')
+    infoTitle.setAttribute('class', 'modalInput newTaskInput infoTitleCreated')
+    infoTitle.setAttribute('id', 'infoTitle')
+    infoTitle.setAttribute('required', '')
+
+    const labelDate = document.createElement('label') 
+    labelDate.setAttribute('class', 'templateLabelNewTask')
+    labelDate.textContent = 'Due Date'
+    
+    const infoDate = document.createElement('input')
+    infoDate.setAttribute('class', 'modalInput infoDateCreated')
+    infoDate.setAttribute('type', 'date')
+
+    const labelNotes = document.createElement('label')
+    labelNotes.setAttribute('class', 'templateLabelNewTask')
+    labelNotes.textContent = 'Notes'
+
+    const infoNotes = document.createElement('textarea')
+    infoNotes.setAttribute('class', 'modalInput notesInfoCreated')
+    infoNotes.setAttribute('id', 'notesInfo')
+    infoNotes.setAttribute('maxlength', '150')
+    infoNotes.setAttribute('rows', '3')
+    infoNotes.setAttribute('placeholder', 'Insert you notes here...')
+
+    const saveEditButtonContainer = document.createElement('div')
+    saveEditButtonContainer.setAttribute('id', 'saveEditButtonContainer')
+
+    const saveEditButton = document.createElement('button')
+    saveEditButton.setAttribute('class', 'button addTaskButton saveEditButton')
+    saveEditButton.setAttribute('id', 'saveEditButtonCreated')
     saveEditButton.textContent = 'Save changes'
 
     saveEditButtonContainer.appendChild(saveEditButton)
@@ -417,16 +480,20 @@ const modalsCreator = (function() {
 
     const newProject = _createModalNewProject()
     const newTask = _createModalNewTask()
-    const taskInfo = _createModalTaskInfo()
 
     modal.appendChild(newProject)
     modal.appendChild(newTask)
-    modal.appendChild(taskInfo)
 
     return modal
   }
 
-  return { createModal, createModalDeleteProjectOnStart, createModalDeleteProjectCreated }
+  return {
+    createModal, 
+    createModalDeleteProjectOnStart,
+    createModalDeleteProjectCreated,
+    createModalTaskInfoOnStart,
+    createModalTaskInfoCreated
+  }
 })()
 
 
@@ -656,16 +723,6 @@ const modalDomHandler = (function() {
     notes.value = ''
     newTaskModal.style.display = 'none'
   }
-  const displayTaskInfoModal = () => {
-    const taskInfoModal = document.querySelector('.modalTaskInfo')
-    _displayModal()
-    taskInfoModal.style.display = 'flex'
-  }
-  const removeTaskInfoModal = () => {
-    const taskInfoModal = document.querySelector('.modalTaskInfo')
-    _removeModal()
-    taskInfoModal.style.display = 'none'
-  }
   const displayDeleteProjectModalOnStart = () => {
     let modal = document.querySelector('.modal')
     const deleteProjectModal = modalsCreator.createModalDeleteProjectOnStart()
@@ -694,20 +751,49 @@ const modalDomHandler = (function() {
     _removeModal()
     deleteTaskModal.remove()
   }
-  //create an edit date and edit notes function
+  const displayTaskInfoModalOnStart = () => {
+    let modal = document.querySelector('.modal')
+    const taskInfoModal = modalsCreator.createModalTaskInfoOnStart()
+
+    _displayModal()
+
+    modal.appendChild(taskInfoModal)
+    taskInfoModal.style.display = 'flex'
+  }
+  const removeTaskInfoModalOnStart = () => {
+    const taskInfoModal = document.querySelector('#modalTaskInfoOnStart')
+    _removeModal()
+    taskInfoModal.remove()
+  }
+  const displayTaskInfoModalCreated = () => {
+    let modal = document.querySelector('.modal')
+    const taskInfoModal = modalsCreator.createModalTaskInfoCreated()
+
+    _displayModal()
+
+    modal.appendChild(taskInfoModal)
+    taskInfoModal.style.display = 'flex'
+  }
+  const removeTaskInfoModalCreated = () => {
+    const taskInfoModal = document.querySelector('#modalTaskInfoCreated')
+    _removeModal()
+    taskInfoModal.remove()
+  }
 
   return {
     createModals,
     displayNewProjectModal,
     displayNewTaskModal,
-    displayTaskInfoModal,
     displayDeleteProjectModalOnStart,
     displayDeleteProjectModalCreated,
+    displayTaskInfoModalOnStart,
+    displayTaskInfoModalCreated,
     removeNewProjectModal,
     removeNewTaskModal,
-    removeTaskInfoModal,
     removeDeleteProjectModalOnStart,
-    removeDeleteProjectModalCreated
+    removeDeleteProjectModalCreated,
+    removeTaskInfoModalOnStart,
+    removeTaskInfoModalCreated
   }
 })()
 

@@ -136,6 +136,7 @@ const init = (function () {
         navDomHandler.createProjectListItem(name, id)
       })
       navDomHandler.addClickedStyle('0')
+      userObj.projects[0].isDisplayed = true
       mainDomHandler.setProjectTitleOnPage(userObj.projects[0].name)
   
       userObj.projects[0].todos.forEach(todo => {
@@ -145,7 +146,7 @@ const init = (function () {
   
         mainDomHandler.createTodosListItem(title, id)
       })
-  
+
       variablesForControl.pageInitiated = true
   
       if(userObj.projects[0].todos[0] === undefined) mainDomHandler.renderEmptyTodosText()
@@ -195,8 +196,14 @@ const changesHandler = (function() {
       mainDomHandler.setProjectTitleOnPage('')
     }
   }
+  const changeTaskTitle = (id, newTitle) => {
+    const task = document.querySelector(`[data-deletetodo='${id}']`)
+    const taskTitle = task.querySelector('.todoTitle')
 
-  return { displayNewProject, displayNextProject }
+    taskTitle.textContent = newTitle
+  }
+
+  return { displayNewProject, displayNextProject, changeTaskTitle }
 })()
 
 
@@ -221,6 +228,14 @@ const eventsHandler = (function(){
     const cancelBtn = document.querySelector('#cancelDeleteProjectButton')
     closeBtn.addEventListener('click', modalDomHandler.removeDeleteProjectModalOnStart)
     cancelBtn.addEventListener('click', modalDomHandler.removeDeleteProjectModalOnStart)
+  }
+  const addListenerCloseTaskInfoCreated = () => {
+    const closeBtn = document.querySelector('#modalTaskInfoCreated .close')
+    closeBtn.addEventListener('click', modalDomHandler.removeTaskInfoModalCreated)
+  }
+  const addListenerCloseTaskInfoOnStart = () => {
+    const closeBtn = document.querySelector('#modalTaskInfoOnStart .close')
+    closeBtn.addEventListener('click', modalDomHandler.removeTaskInfoModalOnStart)
   }
   const addListenerToDeleteCreatedTask = (taskId, projectId) => {
     const taskElem = document.querySelector(`[data-deletetodo = '${taskId}']`)
@@ -287,6 +302,71 @@ const eventsHandler = (function(){
       userObj.projects[projectId].isDisplayed = true
 
       changesHandler.displayNewProject(projectId)
+      addListenerDeleteTaskOnStart()
+      addListenerTaskInfoOnStart()
+    })
+  }
+  const addListenerTaskInfoOnStart = () => {
+    const editBtns = document.querySelectorAll('.editTodo')
+    editBtns.forEach(editBtn => editBtn.addEventListener('click', (e) => {
+      const clickedProject = variablesForControl.setCurrentlyDisplayedProject()
+      const projectId = clickedProject.getAttribute('data-deleteproject')
+      const currentTaskId = e.target.parentElement.parentElement.parentElement.getAttribute('data-deletetodo')
+      modalDomHandler.displayTaskInfoModalOnStart()
+      addListenerCloseTaskInfoOnStart()
+
+      const titleInput = document.querySelector('.infoTitleOnStart')
+      const dateInput = document.querySelector('.infoDateOnStart')
+      const notesInput = document.querySelector('.notesInfoOnStart')
+
+      titleInput.value = userObj.projects[projectId].todos[currentTaskId].title
+      dateInput.value = userObj.projects[projectId].todos[currentTaskId].dueDate
+      notesInput.value = userObj.projects[projectId].todos[currentTaskId].notes
+
+      const form = document.querySelector('.taskInfoFormOnStart')
+      form.addEventListener('submit', prevent.Refresh)
+      form.addEventListener('submit', () => {
+        userObj.projects[projectId].todos[currentTaskId].title = document.querySelector('.infoTitleOnStart').value
+        userObj.projects[projectId].todos[currentTaskId].dueDate = document.querySelector('.infoDateOnStart').value
+        userObj.projects[projectId].todos[currentTaskId].notes = document.querySelector('.notesInfoOnStart').value
+
+        modalDomHandler.removeTaskInfoModalOnStart()
+
+        changesHandler.changeTaskTitle(currentTaskId, userObj.projects[projectId].todos[currentTaskId].title)
+
+        localStorageHandler.update()
+      })
+    }))
+  }
+  const addListenerTaskInfoCreated = (taskId, projectId) => {
+    const createdTask = document.querySelector(`[data-deletetodo='${taskId}']`)
+    const editBtn = createdTask.querySelector('.editTodo')
+
+    editBtn.addEventListener('click', (e) => {
+      const currentTaskId = e.target.parentElement.parentElement.parentElement.getAttribute('data-deletetodo') 
+      modalDomHandler.displayTaskInfoModalCreated()
+      addListenerCloseTaskInfoCreated()
+      const titleInput = document.querySelector('.infoTitleCreated')
+      const dateInput = document.querySelector('.infoDateCreated')
+      const notesInput = document.querySelector('.notesInfoCreated')
+
+      titleInput.value = userObj.projects[projectId].todos[currentTaskId].title
+      dateInput.value = userObj.projects[projectId].todos[currentTaskId].dueDate
+      notesInput.value = userObj.projects[projectId].todos[currentTaskId].notes
+
+      const form = document.querySelector('.taskInfoFormCreated')
+      form.addEventListener('submit', prevent.Refresh)
+      form.addEventListener('submit', () => {
+        userObj.projects[projectId].todos[currentTaskId].title = document.querySelector('.infoTitleCreated').value
+        userObj.projects[projectId].todos[currentTaskId].dueDate = document.querySelector('.infoDateCreated').value
+        userObj.projects[projectId].todos[currentTaskId].notes = document.querySelector('.notesInfoCreated').value
+
+        modalDomHandler.removeTaskInfoModalCreated()
+
+        changesHandler.changeTaskTitle(currentTaskId, userObj.projects[projectId].todos[currentTaskId].title)
+
+        localStorageHandler.update()
+      })
     })
   }
   const addListenerSubmitNewTask = () => {
@@ -311,6 +391,7 @@ const eventsHandler = (function(){
       mainDomHandler.createTodosListItem(title, taskId)
 
       addListenerToDeleteCreatedTask(taskId, currentProjectId)
+      addListenerTaskInfoCreated(taskId, currentProjectId)
 
       localStorageHandler.update()
 
@@ -320,7 +401,6 @@ const eventsHandler = (function(){
   const addListenerNewTask = () => {
     const newTodoButton = document.querySelector('.newTodoButton')
     newTodoButton.addEventListener('click', modalDomHandler.displayNewTaskModal)
-    const newTaskModal = document.querySelector('.modalNewTask')
     addListenerSubmitNewTask()
     addListenerCloseNewTask()
   }
@@ -442,6 +522,7 @@ const eventsHandler = (function(){
 
         changesHandler.displayNewProject(clickedProjectId)
         addListenerDeleteTaskOnStart()
+        addListenerTaskInfoOnStart()
       })
     })
   }
@@ -454,6 +535,7 @@ const eventsHandler = (function(){
       addListenerNewProject()
       addListenerDeleteProjectOnStart()
       addListenerDeleteTaskOnStart()
+      addListenerTaskInfoOnStart()
       addListenerNavigateProjectsOnStart()
     })
   }
@@ -466,7 +548,8 @@ const eventsHandler = (function(){
     addListenerDeleteProjectOnStart,
     addListenerSubmitNewTask,
     addListenerDeleteTaskOnStart,
-    addListenerNavigateProjectsOnStart
+    addListenerNavigateProjectsOnStart,
+    addListenerTaskInfoOnStart
   }
 })()
 
@@ -479,7 +562,6 @@ const loginHandler = (function() {
       loginPageRenderer.initialRender()
       eventsHandler.addListenerLogin()
     }
-
     else {
       init.renderCustomAppPage()
     }
@@ -492,8 +574,7 @@ const loginHandler = (function() {
     eventsHandler.addListenerNewProject()
     eventsHandler.addListenerDeleteProjectOnStart()
     eventsHandler.addListenerDeleteTaskOnStart()
+    eventsHandler.addListenerTaskInfoOnStart()
     eventsHandler.addListenerNavigateProjectsOnStart()
   }
-  
-  
 })()
