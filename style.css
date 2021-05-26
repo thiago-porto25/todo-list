@@ -709,3 +709,17 @@ main {
   text-decoration: none;
   cursor: pointer;
 }
+
+
+
+
+/* Alert Modal */
+
+.alertModal {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  height: 5rem;
+  width: 20rem;
+  font-weight: bolder;
+}
