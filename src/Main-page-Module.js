@@ -556,6 +556,8 @@ const mainDomHandler = (function(){
   }
 
   const createTodosListItem = (title, id) => {
+    const todosList = document.querySelector('.todosList')
+
     const todosListItem = document.createElement('li')
     todosListItem.setAttribute('class', 'todosListItem')
     todosListItem.setAttribute('data-deleteTodo', id)
@@ -599,8 +601,6 @@ const mainDomHandler = (function(){
     buttonsContainer.appendChild(deleteButton)
 
     todosListItem.appendChild(buttonsContainer)
-
-    const todosList = document.querySelector('.todosList')
 
     todosList.appendChild(todosListItem)
 
