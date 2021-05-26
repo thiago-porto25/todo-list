@@ -425,6 +425,10 @@ main {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.done {
+  text-decoration: line-through;
+  color: rgb(65, 63, 63);
+}
 .taskButton {
   margin-left: 0.3rem;
   margin-right: 0.3rem;

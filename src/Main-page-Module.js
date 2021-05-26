@@ -567,6 +567,7 @@ const mainDomHandler = (function(){
 
     const checkbox = document.createElement('input')
     checkbox.setAttribute('type', 'checkbox')
+    checkbox.setAttribute('class', 'taskCheckbox')
 
     const checkmark = document.createElement('span')
     checkmark.setAttribute('class', 'checkmark')

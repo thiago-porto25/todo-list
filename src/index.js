@@ -209,6 +209,48 @@ const changesHandler = (function() {
 
 
 const eventsHandler = (function(){
+  const addListenerTaskDoneOnStart = () => {
+    const checkboxes = document.querySelectorAll('.taskCheckbox')
+    checkboxes.forEach(checkbox => checkbox.addEventListener('click', () => {
+      const currentProject = variablesForControl.setCurrentlyDisplayedProject()
+      const currentProjectId = currentProject.getAttribute('data-deleteproject')
+      const taskListItem = checkbox.parentElement.parentElement
+      const TaskListItemId = taskListItem.getAttribute('data-deletetodo')
+      const taskTitle = taskListItem.querySelector('.todoTitle')
+
+      if(checkbox.checked === true) {
+        taskTitle.setAttribute('class','todoTitle done')
+        userObj.projects[currentProjectId].todos[TaskListItemId].isDone = true
+      }
+      else if (checkbox.checked === false) {
+        taskTitle.setAttribute('class', 'todoTitle')
+        userObj.projects[currentProjectId].todos[TaskListItemId].isDone = false
+      }
+      localStorageHandler.update()
+    }))
+  }
+  const addListenerTaskDoneCreated = (taskId) => {
+    const taskListItem = document.querySelector(`[data-deletetodo='${taskId}']`)
+    const checkbox = taskListItem.querySelector('.taskCheckbox')
+
+    checkbox.addEventListener('click', (e) => {
+      const currentProject = variablesForControl.setCurrentlyDisplayedProject()
+      const currentProjectId = currentProject.getAttribute('data-deleteproject')
+      const currentTask = e.target.parentElement.parentElement
+      const currentTaskId = currentTask.getAttribute('data-deletetodo')
+      const currentTaskTitle = currentTask.querySelector('.todoTitle')
+
+      if(checkbox.checked === true) {
+        currentTaskTitle.setAttribute('class', 'todoTitle done')
+        userObj.projects[currentProjectId].todos[currentTaskId].isDone = true
+      }
+      else if (checkbox.checked === false) {
+        currentTaskTitle.setAttribute('class', 'todoTitle')
+        userObj.projects[currentProjectId].todos[currentTaskId].isDone = false
+      }
+      localStorageHandler.update()
+    })
+  }
   const addListenerCloseNewTask = () => {
     const closeBtn = document.querySelector('.modalNewTask .close')
     closeBtn.addEventListener('click', modalDomHandler.removeNewTaskModal)
@@ -237,13 +279,18 @@ const eventsHandler = (function(){
     const closeBtn = document.querySelector('#modalTaskInfoOnStart .close')
     closeBtn.addEventListener('click', modalDomHandler.removeTaskInfoModalOnStart)
   }
-  const addListenerToDeleteCreatedTask = (taskId, projectId) => {
+  const addListenerToDeleteCreatedTask = (taskId) => {
     const taskElem = document.querySelector(`[data-deletetodo = '${taskId}']`)
     const deleteButton = taskElem.querySelector('.deleteTodo')
-    deleteButton.addEventListener('click', () => {
-      userObj.projects[projectId].todos.splice(taskId, 1)
+    deleteButton.addEventListener('click', (e) => {
+      const project = variablesForControl.setCurrentlyDisplayedProject()
+      const projectId = project.getAttribute('data-deleteproject')
+      const currentTask = e.target.parentElement.parentElement.parentElement
+      const currentTaskId = currentTask.getAttribute('data-deletetodo')
 
-      taskElem.remove()
+      userObj.projects[projectId].todos.splice(currentTaskId, 1)
+
+      currentTask.remove()
 
       localStorageHandler.update()
 
@@ -304,6 +351,7 @@ const eventsHandler = (function(){
       changesHandler.displayNewProject(projectId)
       addListenerDeleteTaskOnStart()
       addListenerTaskInfoOnStart()
+      addListenerTaskDoneOnStart()
     })
   }
   const addListenerTaskInfoOnStart = () => {
@@ -338,11 +386,13 @@ const eventsHandler = (function(){
       })
     }))
   }
-  const addListenerTaskInfoCreated = (taskId, projectId) => {
+  const addListenerTaskInfoCreated = (taskId) => {
     const createdTask = document.querySelector(`[data-deletetodo='${taskId}']`)
     const editBtn = createdTask.querySelector('.editTodo')
 
     editBtn.addEventListener('click', (e) => {
+      const project = variablesForControl.setCurrentlyDisplayedProject()
+      const projectId = project.getAttribute('data-deleteproject')
       const currentTaskId = e.target.parentElement.parentElement.parentElement.getAttribute('data-deletetodo') 
       modalDomHandler.displayTaskInfoModalCreated()
       addListenerCloseTaskInfoCreated()
@@ -390,8 +440,9 @@ const eventsHandler = (function(){
 
       mainDomHandler.createTodosListItem(title, taskId)
 
-      addListenerToDeleteCreatedTask(taskId, currentProjectId)
-      addListenerTaskInfoCreated(taskId, currentProjectId)
+      addListenerToDeleteCreatedTask(taskId)
+      addListenerTaskInfoCreated(taskId)
+      addListenerTaskDoneCreated(taskId)
 
       localStorageHandler.update()
 
@@ -523,6 +574,7 @@ const eventsHandler = (function(){
         changesHandler.displayNewProject(clickedProjectId)
         addListenerDeleteTaskOnStart()
         addListenerTaskInfoOnStart()
+        addListenerTaskDoneOnStart()
       })
     })
   }
@@ -549,7 +601,8 @@ const eventsHandler = (function(){
     addListenerSubmitNewTask,
     addListenerDeleteTaskOnStart,
     addListenerNavigateProjectsOnStart,
-    addListenerTaskInfoOnStart
+    addListenerTaskInfoOnStart,
+    addListenerTaskDoneOnStart
   }
 })()
 
@@ -576,5 +629,6 @@ const loginHandler = (function() {
     eventsHandler.addListenerDeleteTaskOnStart()
     eventsHandler.addListenerTaskInfoOnStart()
     eventsHandler.addListenerNavigateProjectsOnStart()
+    eventsHandler.addListenerTaskDoneOnStart()
   }
 })()
