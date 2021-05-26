@@ -614,6 +614,14 @@ const mainDomHandler = (function(){
     todosList.forEach(todo => todo.remove())
   }
 
+  const addDoneStyling = (todoListItem) => {
+    const checkbox = todoListItem.querySelector('.taskCheckbox')
+    const title = todoListItem.querySelector('.todoTitle')
+
+    checkbox.checked = true
+    title.setAttribute('class', 'todoTitle done')
+  }
+
   const createEmptyTodosText = () => {
     const textContainer = document.createElement('div')
     textContainer.setAttribute('class', 'textContainer emptyTodos')
@@ -673,7 +681,8 @@ const mainDomHandler = (function(){
     renderEmptyTodosText,
     createNoProjectsText,
     unrenderNoProjectsText,
-    renderNoProjectsText
+    renderNoProjectsText,
+    addDoneStyling
   }
 })()
 

@@ -140,11 +140,12 @@ const init = (function () {
       mainDomHandler.setProjectTitleOnPage(userObj.projects[0].name)
   
       userObj.projects[0].todos.forEach(todo => {
-        console.log(userObj.projects[0].todos)
         const title = todo.title
         const id = userObj.projects[0].todos.indexOf(todo)
   
-        mainDomHandler.createTodosListItem(title, id)
+        const todoListItem = mainDomHandler.createTodosListItem(title, id)
+
+        if(todo.isDone === true) mainDomHandler.addDoneStyling(todoListItem)
       })
 
       variablesForControl.pageInitiated = true
@@ -172,7 +173,8 @@ const changesHandler = (function() {
 
     else {
       project.todos.forEach(todo => {
-        mainDomHandler.createTodosListItem(todo.title, project.todos.indexOf(todo))
+        const todoListItem = mainDomHandler.createTodosListItem(todo.title, project.todos.indexOf(todo))
+        if (todo.isDone === true) mainDomHandler.addDoneStyling(todoListItem)
       })
     }
   }
