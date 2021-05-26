@@ -453,7 +453,15 @@ const eventsHandler = (function(){
   }
   const addListenerNewTask = () => {
     const newTodoButton = document.querySelector('.newTodoButton')
-    newTodoButton.addEventListener('click', modalDomHandler.displayNewTaskModal)
+    newTodoButton.addEventListener('click', () => {
+      if (userObj.projects[0] === undefined) {
+        modalDomHandler.displayNoProjectsAlertModal()
+        setTimeout(function() {modalDomHandler.removeNoProjectsAlertModal()}, 3000)
+      }
+      else {
+        modalDomHandler.displayNewTaskModal()
+      }
+    })
     addListenerSubmitNewTask()
     addListenerCloseNewTask()
   }

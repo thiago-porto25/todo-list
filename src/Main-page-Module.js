@@ -473,6 +473,19 @@ const modalsCreator = (function() {
 
     return deleteTask
   }
+  
+  const _createNoProjectsAlertModal = () => {
+    const alertDiv = document.createElement('div')
+    alertDiv.setAttribute('class', 'modalTemplate alertModal')
+
+    const span = document.createElement('span')
+    span.setAttribute('class', 'alertText')
+    span.textContent = 'You need to create a Project First!'
+
+    alertDiv.appendChild(span)
+
+    return alertDiv
+  }
 
   const createModal = () => {
     const modal = document.createElement('div')
@@ -480,9 +493,11 @@ const modalsCreator = (function() {
 
     const newProject = _createModalNewProject()
     const newTask = _createModalNewTask()
+    const alertMessage = _createNoProjectsAlertModal()
 
     modal.appendChild(newProject)
     modal.appendChild(newTask)
+    modal.appendChild(alertMessage)
 
     return modal
   }
@@ -505,7 +520,8 @@ const navDomHandler = (function() {
     listItem.setAttribute('class', 'projectsListItem')
     listItem.setAttribute('data-deleteproject', id)
 
-    const para = document.createElement('p')
+    const para = document.createElement('span')
+    para.setAttribute('class', 'projectNamePara')
     para.textContent = name
 
     const deleteIcon = document.createElement('i')
@@ -789,6 +805,16 @@ const modalDomHandler = (function() {
     _removeModal()
     taskInfoModal.remove()
   }
+  const displayNoProjectsAlertModal = () => {
+    const alertModal = document.querySelector('.alertModal')
+    _displayModal()
+    alertModal.style.display = 'flex'
+  }
+  const removeNoProjectsAlertModal = () => {
+    const alertModal = document.querySelector('.alertModal')
+    _removeModal()
+    alertModal.style.display = 'none'
+  }
 
   return {
     createModals,
@@ -798,12 +824,14 @@ const modalDomHandler = (function() {
     displayDeleteProjectModalCreated,
     displayTaskInfoModalOnStart,
     displayTaskInfoModalCreated,
+    displayNoProjectsAlertModal,
     removeNewProjectModal,
     removeNewTaskModal,
     removeDeleteProjectModalOnStart,
     removeDeleteProjectModalCreated,
     removeTaskInfoModalOnStart,
-    removeTaskInfoModalCreated
+    removeTaskInfoModalCreated,
+    removeNoProjectsAlertModal
   }
 })()
 
