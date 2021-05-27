@@ -592,7 +592,6 @@ const eventsHandler = (function(){
     const openNavButton = document.querySelector('#openNavButton')
     openNavButton.addEventListener('click', () => {
       const nav = document.querySelector('nav')
-      nav.style.display = 'flex'
       nav.style.width = '100%'
       nav.style.minWidth = '100%'
       nav.style.zIndex = '1'
@@ -607,7 +606,6 @@ const eventsHandler = (function(){
       nav.style.minWidth = '0'
       nav.style.zIndex = ''
       nav.style.position = ''
-      nav.style.display = 'none'
     })
   }
   const addListenerLogin = () => {
