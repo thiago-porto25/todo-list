@@ -99,6 +99,7 @@ input:not(:focus):valid ~ .floating-label{
   display: flex;
   width: 100%;
   height: 100%;
+  position: relative;
 }
 
 
@@ -122,6 +123,37 @@ nav {
   font-size: 45px;
   font-weight: bolder;
   text-shadow: 2px 2px 0px rgb(12, 12, 119);
+}
+
+/* close Nav */
+#closeNavContainer {
+  display: none;
+  height: 2.5rem;
+  width: 2.5rem;
+  margin: 0.5rem;
+  background-color: white;
+  border-radius: 5px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  justify-content: center;
+  align-items: center;
+}
+#closeNavButton {
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+  outline: none;
+  border: 0;
+  cursor: pointer;
+  transition: 0.05s;
+}
+#closeNavButton:hover {
+  background-color: rgb(221, 218, 218);
+}
+#closeNavButton i {
+  font-size: 20px;
+  color: rgb(12, 12, 119);
 }
 
 
@@ -246,6 +278,37 @@ main {
   width: fit-content;
 }
 
+/* open Nav */
+#openNavContainer {
+  display: none;
+  height: 3rem;
+  width: 3rem;
+  margin: 0.5rem;
+  background-color: white;
+  border-radius: 5px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  justify-content: center;
+  align-items: center;
+}
+#openNavButton {
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+  outline: none;
+  border: 0;
+  cursor: pointer;
+  transition: 0.05s;
+}
+#openNavButton:hover {
+  background-color: rgb(221, 218, 218);
+}
+#openNavButton i {
+  font-size: 20px;
+  color: rgb(12, 12, 119);
+}
+
 /* New Todo Button */
 #newTodoButtonContainer {
   background-color: white !important;
@@ -300,12 +363,17 @@ main {
   justify-content: center;
   align-items: center;
   position: relative;
+  margin-top: 3.5rem;
+  margin-bottom: 1rem;
 }
 .projectTitleContainer h2 {
   text-align: center;
   width: 100%;
   position: relative;
   margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .fa-pen {
   position: absolute;
@@ -722,4 +790,87 @@ main {
   height: 5rem;
   width: 20rem;
   font-weight: bolder;
+}
+
+
+
+@media (max-width: 850px) {
+  nav {
+    display: none;
+    width: 0;
+    min-width: 0;
+    background-color: white;
+  }
+  .logo span {
+    margin-top: 2rem;
+  }
+  #closeNavContainer {
+    display: flex;
+  }
+  main {
+    width: 100%;
+  }
+  #openNavContainer {
+    display: flex;
+  }
+  .projectTitleContainer {
+    max-width: 34rem;
+    width: 90%;
+  }
+  .projectTodosContainer {
+    max-width: 34rem;
+    width: 90%;
+  }
+  .todosList {
+    margin: 1rem;
+  }
+  .todoTitle {
+    width: 60%;
+    margin-left: 2.5rem;
+  }
+  .modalNewTask {
+    width: 80%;
+  }
+  #taskTitleContainer {
+    margin-top: 1.5rem;
+  }
+  .newTaskInput {
+    width: 80%;
+    font-size: 17px;
+  }
+  #notesContainer textarea {
+    width: 80%;
+  }
+  #addTaskButtonContainer {
+    align-items: flex-start;
+  }
+  .modalTaskInfo {
+    width: 80%;
+  }
+  #infoContainer {
+    width: 80%;
+  }
+  .modalDelete {
+    width: 80%;
+  }
+  .modalDelete p {
+    font-size: 15px;
+    margin: 1rem;
+  }
+  #finalDeleteProjectButtonOnStart {
+    margin: 0;
+  }
+  .modalNewProject {
+    width: 80%;
+  }
+}
+
+@media (max-width: 400px) {
+  .todoTitle {
+    font-size: 13px;
+    width: 50%;
+  }
+  .buttonsContainer {
+    right: 0;
+  }
 }
