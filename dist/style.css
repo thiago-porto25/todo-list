@@ -796,6 +796,26 @@ main {
 
 
 @media (max-width: 850px) {
+  #bigLogoContainer span {
+    font-size: 50px;
+  }
+  .headerLogin {
+    width: 80%;
+    max-width: 21rem;
+  }
+  .loginContainer {
+    width: 80%;
+    max-width: 21rem;
+  }
+  #inputUserFirstName {
+    width: 100%;
+    max-width: 21rem;
+  }
+  .loginButton {
+    width: 80%;
+    max-width: 21rem;
+    padding: 0;
+  }
   nav {
     width: 0;
     min-width: 0;
@@ -806,6 +826,13 @@ main {
   }
   #closeNavContainer {
     display: flex;
+  }
+  .projectsListItem {
+    margin-right: 0;
+    width: 100%;
+  }
+  .fa-project-delete {
+    right: 2.5rem;
   }
   main {
     width: 100%;
@@ -865,12 +892,22 @@ main {
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 450px) {
   .todoTitle {
     font-size: 13px;
     width: 50%;
   }
   .buttonsContainer {
     right: 0;
+  }
+  .alertModal {
+    width: 80%;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 300px) {
+  .noProjects, .emptyTodos {
+    font-size: 14px;
   }
 }
