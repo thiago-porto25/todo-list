@@ -21,10 +21,6 @@ const prevent = (function () {
   return { Refresh };
 }());
 
-const localStorageUserObj = JSON.parse(localStorage.getItem('user'));
-
-const userObj = localStorage.getItem('user') !== null ? localStorageUserObj : {};
-
 const variablesForControl = (function () {
   const pageInitiated = false;
 
@@ -61,6 +57,10 @@ const variablesForControl = (function () {
     resetDeleteProjectId,
   };
 }());
+
+const localStorageUserObj = JSON.parse(localStorage.getItem('user'));
+
+const userObj = localStorage.getItem('user') !== null ? localStorageUserObj : {};
 
 const localStorageHandler = (function () {
   const update = () => {
