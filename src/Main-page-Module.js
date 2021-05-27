@@ -1,4 +1,3 @@
-
 const navCreator = (function() {
   const _createLogo = () => {
     const logoContainer = document.createElement('div')
@@ -11,6 +10,22 @@ const navCreator = (function() {
     logoContainer.appendChild(span)
 
     return logoContainer
+  }
+
+  const _createCloseNavContainer = () => {
+    const closeNavContainer = document.createElement('div')
+    closeNavContainer.setAttribute('id', 'closeNavContainer')
+
+    const closeNavButton = document.createElement('button')
+    closeNavButton.setAttribute('id', 'closeNavButton')
+
+    const closeNavIcon = document.createElement('i')
+    closeNavIcon.setAttribute('class', 'fas fa-chevron-left')
+
+    closeNavButton.appendChild(closeNavIcon)
+    closeNavContainer.appendChild(closeNavButton)
+
+    return closeNavContainer
   }
 
   const _createNewProjectButtonContainer = () => {
@@ -73,11 +88,13 @@ const navCreator = (function() {
   const createNav = () => {
     const nav = document.createElement('nav')
 
+    const closeNavContainer = _createCloseNavContainer()
     const logoContainer = _createLogo()
     const newProjectButtonContainer = _createNewProjectButtonContainer()
     const projectsListContainer = _createProjectsListContainer()
     const foot = _createFooter()
 
+    nav.appendChild(closeNavContainer)
     nav.appendChild(logoContainer)
     nav.appendChild(newProjectButtonContainer)
     nav.appendChild(projectsListContainer)
@@ -107,6 +124,22 @@ const mainCreator = (function() {
     userNameContainer.appendChild(span)
 
     return userNameContainer
+  }
+
+  const _createOpenNavContainer = () => {
+    const openNavContainer = document.createElement('div')
+    openNavContainer.setAttribute('id', 'openNavContainer')
+
+    const openNavButton = document.createElement('button')
+    openNavButton.setAttribute('id', 'openNavButton')
+
+    const openNavIcon = document.createElement('i')
+    openNavIcon.setAttribute('class', 'fas fa-bars')
+
+    openNavButton.appendChild(openNavIcon)
+    openNavContainer.appendChild(openNavButton)
+
+    return openNavContainer
   }
 
   const _createNewTodoButtonContainer = () => {
@@ -153,11 +186,13 @@ const mainCreator = (function() {
   const createMain = () => {
     const main = document.createElement('main')
     const userNameContainer = _createUserNameContainer()
+    const openNavContainer = _createOpenNavContainer()
     const newTodoButton = _createNewTodoButtonContainer()
     const projectTitleContainer = _createProjectTitleContainer()
     const projectTodosContainer = _createProjectTodosContainer()
 
     main.appendChild(userNameContainer)
+    main.appendChild(openNavContainer)
     main.appendChild(newTodoButton)
     main.appendChild(projectTitleContainer)
     main.appendChild(projectTodosContainer)

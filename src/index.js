@@ -588,12 +588,36 @@ const eventsHandler = (function(){
       })
     })
   }
+  const addListenerOpenNav = () => {
+    const openNavButton = document.querySelector('#openNavButton')
+    openNavButton.addEventListener('click', () => {
+      const nav = document.querySelector('nav')
+      nav.style.display = 'flex'
+      nav.style.width = '100%'
+      nav.style.minWidth = '100%'
+      nav.style.zIndex = '1'
+      nav.style.position = 'absolute'
+    })
+  }
+  const addListenerCloseNav = () => {
+    const closeNavButton = document.querySelector('#closeNavButton')
+    closeNavButton.addEventListener('click', () => {
+      const nav = document.querySelector('nav')
+      nav.style.width = '0'
+      nav.style.minWidth = '0'
+      nav.style.zIndex = ''
+      nav.style.position = ''
+      nav.style.display = 'none'
+    })
+  }
   const addListenerLogin = () => {
     const _loginForm = document.querySelector('#loginForm')
     _loginForm.addEventListener('submit', prevent.Refresh)
     _loginForm.addEventListener('submit', () => {
       init.renderDefaultAppPage()
       addListenerNewTask()
+      addListenerOpenNav()
+      addListenerCloseNav()
       addListenerNewProject()
       addListenerDeleteProjectOnStart()
       addListenerDeleteTaskOnStart()
@@ -612,7 +636,9 @@ const eventsHandler = (function(){
     addListenerDeleteTaskOnStart,
     addListenerNavigateProjectsOnStart,
     addListenerTaskInfoOnStart,
-    addListenerTaskDoneOnStart
+    addListenerTaskDoneOnStart,
+    addListenerOpenNav,
+    addListenerCloseNav
   }
 })()
 
@@ -640,5 +666,7 @@ const loginHandler = (function() {
     eventsHandler.addListenerTaskInfoOnStart()
     eventsHandler.addListenerNavigateProjectsOnStart()
     eventsHandler.addListenerTaskDoneOnStart()
+    eventsHandler.addListenerOpenNav()
+    eventsHandler.addListenerCloseNav()
   }
 })()
