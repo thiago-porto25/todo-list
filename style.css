@@ -110,6 +110,7 @@ nav {
   min-width: 15rem;
   display: flex;
   flex-direction: column;
+  transition: 1s cubic-bezier(0.23, 1, 0.320, 1);
 }
 #logoContainer {
   height: 20%;
@@ -796,7 +797,6 @@ main {
 
 @media (max-width: 850px) {
   nav {
-    display: none;
     width: 0;
     min-width: 0;
     background-color: white;
