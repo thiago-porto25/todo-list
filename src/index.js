@@ -331,16 +331,20 @@ const eventsHandler = (function(){
         localStorageHandler.update()
         variablesForControl.resetDeleteProjectId()
         changesHandler.displayNextProject(id)
+        addListenerDeleteTaskOnStart()
+        addListenerTaskInfoOnStart()
+        addListenerTaskDoneOnStart()
       })
     })
   }
   const addListenerToNavigateCreatedProject = (elem) => {
     elem.addEventListener('click', (e) => {
       const projectId = elem.getAttribute('data-deleteproject')
-      if(e.target !== elem) return
+      const span = elem.querySelector('.projectNamePara')
+      if(e.target !== elem && e.target !== span) return
 
       const projectClass = elem.getAttribute('class')
-
+    
       if(projectClass === 'projectsListItem projectsClicked') return
 
       const allProjects = document.querySelectorAll('.projectsListItem')
@@ -553,6 +557,9 @@ const eventsHandler = (function(){
           localStorageHandler.update()
           variablesForControl.resetDeleteProjectId()
           changesHandler.displayNextProject(deleteId)
+          addListenerDeleteTaskOnStart()
+          addListenerTaskInfoOnStart()
+          addListenerTaskDoneOnStart()
 
           deleteId = undefined
         })
@@ -563,13 +570,14 @@ const eventsHandler = (function(){
     const projectList = document.querySelectorAll('.projectsListItem')
     projectList.forEach(project => {
       project.addEventListener('click', e => {
-        if(e.target !== project) return
+        const span = project.querySelector('.projectNamePara')
+        if(e.target !== project && e.target !== span) return
 
         const checkIfDisplayed = project.getAttribute('class')
 
         if(checkIfDisplayed === 'projectsListItem projectsClicked') return
 
-        const clickedProjectId = e.target.getAttribute('data-deleteproject')
+        const clickedProjectId = project.getAttribute('data-deleteproject')
 
         const allProjects = document.querySelectorAll('.projectsListItem')
 
@@ -577,8 +585,7 @@ const eventsHandler = (function(){
 
         userObj.projects.forEach(projectArr => projectArr.isDisplayed = false)
 
-        e.target.setAttribute('class', 'projectsListItem projectsClicked')
-        console.log(userObj.projects[clickedProjectId].isDisplayed)
+        project.setAttribute('class', 'projectsListItem projectsClicked')
         userObj.projects[clickedProjectId].isDisplayed = true
 
         changesHandler.displayNewProject(clickedProjectId)
