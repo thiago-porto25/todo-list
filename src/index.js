@@ -4,7 +4,6 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable func-names */
-
 import loginPageRenderer from './Login-page-Module'
 import {
   navDomHandler,
