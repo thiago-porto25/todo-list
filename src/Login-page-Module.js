@@ -1,84 +1,84 @@
 /* eslint-disable func-names */
 const loginPageCreator = (function () {
   const createLogo = () => {
-    const bigLogoContainer = document.createElement('div');
-    bigLogoContainer.setAttribute('id', 'bigLogoContainer');
-    bigLogoContainer.setAttribute('class', 'logo');
+    const bigLogoContainer = document.createElement('div')
+    bigLogoContainer.setAttribute('id', 'bigLogoContainer')
+    bigLogoContainer.setAttribute('class', 'logo')
 
-    const span = document.createElement('span');
-    span.textContent = 'Todo List';
+    const span = document.createElement('span')
+    span.textContent = 'Todo List'
 
-    bigLogoContainer.appendChild(span);
+    bigLogoContainer.appendChild(span)
 
-    return bigLogoContainer;
-  };
+    return bigLogoContainer
+  }
 
   const createLoginForm = () => {
-    const loginForm = document.createElement('form');
-    loginForm.setAttribute('id', 'loginForm');
+    const loginForm = document.createElement('form')
+    loginForm.setAttribute('id', 'loginForm')
 
-    const headerLogin = document.createElement('div');
-    headerLogin.setAttribute('class', 'headerLogin');
+    const headerLogin = document.createElement('div')
+    headerLogin.setAttribute('class', 'headerLogin')
 
-    const header = document.createElement('header');
-    header.textContent = 'Log in to Todo List';
+    const header = document.createElement('header')
+    header.textContent = 'Log in to Todo List'
 
-    const loginContainer = document.createElement('div');
-    loginContainer.setAttribute('class', 'loginContainer');
+    const loginContainer = document.createElement('div')
+    loginContainer.setAttribute('class', 'loginContainer')
 
-    const input = document.createElement('input');
-    input.setAttribute('type', 'text');
-    input.setAttribute('required', '');
-    input.setAttribute('maxlength', '10');
-    input.setAttribute('class', 'inputText');
-    input.setAttribute('id', 'inputUserFirstName');
+    const input = document.createElement('input')
+    input.setAttribute('type', 'text')
+    input.setAttribute('required', '')
+    input.setAttribute('maxlength', '10')
+    input.setAttribute('class', 'inputText')
+    input.setAttribute('id', 'inputUserFirstName')
 
-    const span = document.createElement('span');
-    span.setAttribute('class', 'floating-label');
-    span.setAttribute('maxlength', '30');
-    span.textContent = 'First Name';
+    const span = document.createElement('span')
+    span.setAttribute('class', 'floating-label')
+    span.setAttribute('maxlength', '30')
+    span.textContent = 'First Name'
 
-    const button = document.createElement('button');
-    button.setAttribute('class', 'button loginButton');
-    button.textContent = 'Login';
+    const button = document.createElement('button')
+    button.setAttribute('class', 'button loginButton')
+    button.textContent = 'Login'
 
-    loginContainer.appendChild(input);
-    loginContainer.appendChild(span);
+    loginContainer.appendChild(input)
+    loginContainer.appendChild(span)
 
-    headerLogin.appendChild(header);
+    headerLogin.appendChild(header)
 
-    loginForm.appendChild(headerLogin);
-    loginForm.appendChild(loginContainer);
-    loginForm.appendChild(button);
+    loginForm.appendChild(headerLogin)
+    loginForm.appendChild(loginContainer)
+    loginForm.appendChild(button)
 
-    return loginForm;
-  };
+    return loginForm
+  }
 
-  return { createLogo, createLoginForm };
-}());
+  return { createLogo, createLoginForm }
+})()
 
 const loginPageRenderer = (function () {
   const initialRender = () => {
-    const loginPage = document.createElement('div');
-    loginPage.setAttribute('id', 'loginPage');
+    const loginPage = document.createElement('div')
+    loginPage.setAttribute('id', 'loginPage')
 
-    const body = document.querySelector('body');
+    const body = document.querySelector('body')
 
-    const bigLogoContainer = loginPageCreator.createLogo();
+    const bigLogoContainer = loginPageCreator.createLogo()
 
-    const loginForm = loginPageCreator.createLoginForm();
+    const loginForm = loginPageCreator.createLoginForm()
 
-    loginPage.appendChild(bigLogoContainer);
-    loginPage.appendChild(loginForm);
+    loginPage.appendChild(bigLogoContainer)
+    loginPage.appendChild(loginForm)
 
-    body.appendChild(loginPage);
-  };
+    body.appendChild(loginPage)
+  }
   const deleteLoginPage = () => {
-    const loginPage = document.querySelector('#loginPage');
-    loginPage.remove();
-  };
+    const loginPage = document.querySelector('#loginPage')
+    loginPage.remove()
+  }
 
-  return { initialRender, deleteLoginPage };
-}());
+  return { initialRender, deleteLoginPage }
+})()
 
-export { loginPageRenderer as default };
+export { loginPageRenderer as default }
